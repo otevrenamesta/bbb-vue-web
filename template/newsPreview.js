@@ -1,0 +1,27 @@
+/* global axios, API, _ */
+
+export default {
+  data: function () {
+    return {
+      posts: [
+        { title: 'Novinka 1', published: '1-2-2020', content: 'Dlouha zprava o novince 1' },
+        { title: 'Novinka 3', published: '1-2-2020', content: 'Dlouha zprava o novince 2' },
+        { title: 'Novinka 2', published: '1-2-2020', content: 'Dlouha zprava o novince 3' }
+      ]
+    }
+  },
+  props: ['data'],
+  template: `
+  <section id="newsPreview">
+    <div class="container">
+      <div class="row">
+        <div v-for="(i, idx) in posts" :key="idx" class="col-4">
+          <h2>{{ i.title }}</h2>
+          <h4>{{ i.published }}</h4>
+          <p>{{ i.content }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  `
+}
