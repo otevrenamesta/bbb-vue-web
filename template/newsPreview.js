@@ -1,5 +1,3 @@
-/* global axios, API, _ */
-
 export default {
   data: function () {
     return {

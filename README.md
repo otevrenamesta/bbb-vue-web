@@ -8,6 +8,7 @@ Zakladni myslenky udrzitelneho systemu pro spravu webu:
 - data v textovych souborech (daji se eventualne verzovat).
 - web jako JS aplikace konzumujici data z ruznych zdroju
 - moznost generovat static web
+- [inline editace obsahu](https://tina.io/docs/ui/inline-editing/)
 
 ## Struktura repositare s webem
 
