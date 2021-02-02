@@ -1,6 +1,6 @@
 {
-  "name": "userman-webadmin",
-  "title": "JS webclient to userman-api",
+  "name": "bbb-vue-web",
+  "title": "basic building block web",
   "description": "JS webclient to userman-api",
   "version": "0.0.1",
   "main": "index.js",
