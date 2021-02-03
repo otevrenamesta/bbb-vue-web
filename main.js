@@ -13,7 +13,7 @@ import SiteSettings from './data/_site.js'
 
 const router = new VueRouter({
   routes: [
-    { path: '/:page?', component: Page, name: 'home' },
+    { path: '/:page?', component: Page }
   ]
 })
 
@@ -26,9 +26,9 @@ new Vue({
   components: { pageHeader, pageFooter },
   template: `
   <div>
-    <EditForm v-if="$store.state.edited" />
-    <pageHeader :site="site" />
-    <router-view></router-view>
+    <EditForm v-if="$store.state.edited" />    
+    <pageHeader :site="site" />    
+    <router-view :key="$route.fullPath" />
     <pageFooter :site="site" />
   </div>
   `
