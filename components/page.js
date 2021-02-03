@@ -1,15 +1,10 @@
-/* global axios, API, _ */
-import index from '../data/index.js'
-import navstevnici from '../data/navstevnici.js'
 import page404 from '../data/404.js'
-
-const pageData = { index, navstevnici }
+import pageData from '../data/index.js'
 
 export default {
   computed: {
     page: function () {
-      const p = this.$router.currentRoute.path
-      const idx = p.slice(1) || 'index'
+      const idx = this.$router.currentRoute.path
       return idx in pageData ? pageData[idx] : page404
     }
   },

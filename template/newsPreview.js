@@ -11,13 +11,11 @@ export default {
   props: ['data'],
   template: `
   <section id="newsPreview">
-    <div class="container">
-      <div class="row">
-        <div v-for="(i, idx) in posts" :key="idx" class="col-4">
-          <h2>{{ i.title }}</h2>
-          <h4>{{ i.published }}</h4>
-          <p>{{ i.content }}</p>
-        </div>
+    <div class="row align-items-start">
+      <div v-for="(i, idx) in posts" :key="idx" class="col">
+        <h2>{{ i.title }}</h2>
+        <h4>{{ i.published }}</h4>
+        <p>{{ i.content }}</p>
       </div>
     </div>
   </section>

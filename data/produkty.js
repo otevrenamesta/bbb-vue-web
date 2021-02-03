@@ -3,7 +3,6 @@ export default {
    "desc": "stranka pro TS",
    "updated_at": "2021-01-18T12:47:37.254Z",
    "type": "page",
-   "path": "/navstevnici",
    "components": [
   {
     "component": "composition",
