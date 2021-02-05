@@ -12,8 +12,8 @@ export default {
             <p>
               Malinovského náměstí 624/3 <br>
               602 00 Brno<br>
-              <strong>info@otevrenamesta.cz <br>
-              <strong>datová schránka: f47yb4g <br>
+              info@otevrenamesta.cz <br>
+              datová schránka: f47yb4g <br>
             </p>
           </div>
 

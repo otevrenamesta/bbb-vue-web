@@ -11,7 +11,7 @@ export default {
   template: `
 <div>
   <component v-for="(i, idx) in page.components" :key="idx" 
-    :is="i.component" :data="i" :path="page.path + '.components.' + idx">
+    :is="i.component" :data="i" :path="$router.currentRoute.path + '.components.' + idx">
   </component>
 </div>
   `
