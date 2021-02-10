@@ -1,14 +1,16 @@
 export default {
   "title": "Táborská setkání",
+  "component": "meta",
   "desc": "stranka pro TS",
   "updated_at": "2021-01-18T12:47:37.254Z",
   "type": "page",
+  "path": "/",
   "components": [
     {
       "component": "hero",
-      "background": "https://www.tributemedia.com/hubfs/Images/Blog%20Images/shutterstock_252081805.jpg",
-      "title": "Otevřená města 2.0",
-      "subtitle": "Organizace sdružijící otevřené samosprávy",
+      "background": "https://www.taborskasetkani.eu/wp-content/themes/taborska-setkani/img/slider-bg.jpg",
+      "title": "Táborská setkání",
+      "subtitle": "s podtitulem 600 let na hoře Tábore",
       "content": "Máte rádi atmosféru středověku? Láká vás tradiční hudba, zpěv a veselení pod širým nebem? Pak si nenechte ujít další 28. ročník festivalu Táborská setkání, který se bude konat ve dnech 13.-15. 9. 2019"
     },
     {
@@ -16,42 +18,25 @@ export default {
       "class": "container",
       "children": [
         {
-          "component": "composition",
-          "class": "row",
-          "children": [
+          "component": "warning",
+          "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+        },
+        {
+          "component": "sponzori",
+          "list": [
             {
-              "component": "composition",
-              "class": "col-8",
-              "children": [
-                {
-                  "component": "warning",
-                  "content": "Pozor, opensource ahead :)"
-                },
-                {
-                  "component": "sponzori",
-                  "list": [
-                    {
-                      "url": "",
-                      "name": "Daich"
-                    },
-                    {
-                      "url": "",
-                      "name": "CRO"
-                    }
-                  ]
-                },
-                {
-                  "component": "newsPreview",
-                  "count": 3
-                }
-              ]
+              "url": "http://www.daich.cz/images/daich_logo_big.jpg",
+              "name": "Daich"
             },
             {
-              "component": "composition",
-              "class": "col-4",
-              "children": []
+              "url": "http://www.daich.cz/images/daich_logo_big.jpg",
+              "name": "CRO"
             }
           ]
+        },
+        {
+          "component": "newsPreview",
+          "count": 3
         }
       ]
     }

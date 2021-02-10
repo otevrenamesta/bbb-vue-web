@@ -1,15 +1,23 @@
 export default {
-   "title": "Otevřená města",
+   "title": "Táborská setkání",
    "nextEvent": "2021-09-10T12:47:37.254Z",
    "lang": "cs",
    "menu": [
       {
-         "label": "Produkty",
-         "link": "produkty"
+         "label": "Program",
+         "link": "program"
       },
       {
-         "label": "Kontakty",
-         "link": "kontakty"
+         "label": "Vstupné",
+         "link": "vstupne"
+      },
+      {
+         "label": "Pro Návštěvníky",
+         "link": "navstevnici"
+      },
+      {
+         "label": "Organizace",
+         "link": "organizace"
       }
    ]
 }
