@@ -12,4 +12,4 @@ npm-debug.log
 server.js
 vars.env
 package-lock.json
-style/style.css
+public
