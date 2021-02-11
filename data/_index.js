@@ -3,9 +3,9 @@ export default {
   "component": "meta",
   "desc": "stranka pro TS",
   "updated_at": "2021-01-18T12:47:37.254Z",
-  "type": "page",
+  "layout": "bbbLayoutDefault",
   "path": "/",
-  "components": [
+  "children": [
     {
       "component": "hero",
       "background": "https://www.taborskasetkani.eu/wp-content/themes/taborska-setkani/img/slider-bg.jpg",
@@ -22,7 +22,11 @@ export default {
           "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
         },
         {
-          "component": "sponzori",
+          "component": "MDText",
+          "content": "## Sponzoři"
+        },
+        {
+          "component": "imageGrid",
           "list": [
             {
               "url": "http://www.daich.cz/images/daich_logo_big.jpg",

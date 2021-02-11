@@ -9,10 +9,7 @@ export default {
     }
   },
   template: `
-<div>
-  <component v-for="(i, idx) in page.components" :key="idx" 
-    :is="i.component" :data="i" :path="$router.currentRoute.path + '.components.' + idx">
+  <component :is="page.layout" :data="page" :path="$router.currentRoute.path + '.components.'">
   </component>
-</div>
   `
 }

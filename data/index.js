@@ -2,6 +2,7 @@ import navstevnici from './navstevnici.js'
 import organizace from './organizace.js'
 import vstupne from './vstupne.js'
 import program from './program.js'
+import galerie from './galerie.js'
 import index from './_index.js'
 
 export default {
@@ -9,5 +10,6 @@ export default {
   '/navstevnici': navstevnici,
   '/organizace': organizace,
   '/vstupne': vstupne,
-  '/program': program
+  '/program': program,
+  '/galerie': galerie
 }

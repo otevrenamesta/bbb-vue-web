@@ -1,13 +1,20 @@
-import hero from './hero.js'
-import warning from './warning.js'
-import sponzori from './sponzori.js'
-import newsPreview from './newsPreview.js'
-import expandable from './expandable.js'
+import hero from './components/hero.js'
+import warning from './components/warning.js'
+import imageGrid from './components/imageGrid.js'
+import newsPreview from './components/newsPreview.js'
+import expandable from './components/expandable.js'
+
+import defaultLayout from './layout/default.js'
+import pageLayout from './layout/page.js'
+import article from './layout/article.js'
+Vue.component('bbbLayoutDefault', defaultLayout)
+Vue.component('bbbLayoutPage', pageLayout)
+Vue.component('bbbLayoutArticle', article)
 
 Vue.component('hero', hero)
 Vue.component('warning', warning)
-Vue.component('sponzori', sponzori)
+Vue.component('imageGrid', imageGrid)
 Vue.component('newsPreview', newsPreview)
 Vue.component('expandable', expandable)
 
-export default { hero, warning, sponzori, newsPreview }
+export default { hero, warning, imageGrid, newsPreview }

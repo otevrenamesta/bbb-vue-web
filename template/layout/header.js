@@ -19,9 +19,14 @@ export default {
     </nav>
 
     <div class="header-social-links">
-      <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
-      <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
-      <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#">english</a>
+      <a href="#">deutsh</a>
+    </div>
+
+    <div class="header-social-links">
+      <a v-if="site.twitter" :href="site.twitter"><i class="fab fa-twitter"></i></a>
+      <a v-if="site.facebook" :href="site.facebook"><i class="fab fa-facebook"></i></a>
+      <a v-if="site.instagram" :href="site.instagram"><i class="fab fa-instagram"></i></a>
     </div>
 
   </div>

@@ -5,15 +5,18 @@ import pageHeader from './template/layout/header.js'
 import pageFooter from './template/layout/footer.js'
 
 import Page from './components/page.js'
+import MDText from './components/mdText.js'
 import EditForm from './components/editForm.js'
 Vue.component('EditForm', EditForm)
+Vue.component('MDText', MDText)
 import _ from './template/index.js'
 
 import SiteSettings from './data/_site.js'
 
 const router = new VueRouter({
   routes: [
-    { path: '/:page?', component: Page }
+    { path: '/:page?', component: Page },
+    { path: '/clanek/:slug?', component: Page }
   ]
 })
 
