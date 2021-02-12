@@ -9,7 +9,8 @@ export default {
     }
   },
   template: `
-  <component :is="page.layout" :data="page" :path="$router.currentRoute.path + '.components.'">
+  <component :is="page.layout" :data="page" 
+      :path="$router.currentRoute.path + '.children'">
   </component>
   `
 }

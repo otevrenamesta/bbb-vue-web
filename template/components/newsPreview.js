@@ -11,7 +11,7 @@ export default {
   props: ['data'],
   template: `
   <section id="newsPreview">
-    <div class="row align-items-start">
+    <div class="row align-items-start" @click="$store.dispatch('edit', {data, path})">
       <div v-for="(i, idx) in posts" :key="idx" class="col">
         <h2>{{ i.title }}</h2>
         <h4>{{ i.published }}</h4>

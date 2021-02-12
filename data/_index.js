@@ -18,8 +18,9 @@ export default {
       "class": "container",
       "children": [
         {
-          "component": "warning",
-          "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+          "component": "MDText",
+          "class": "alert alert-danger container text-center",
+          "content": "Pořadatelé a účastníci festivalu jsou povinni __dodržovat hygienická opatření__ platná dle aktuální epidemiologické situace."
         },
         {
           "component": "MDText",
@@ -34,7 +35,7 @@ export default {
             },
             {
               "url": "http://www.daich.cz/images/daich_logo_big.jpg",
-              "name": "CRO"
+              "name": "CRO2"
             }
           ]
         },

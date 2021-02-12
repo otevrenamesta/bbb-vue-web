@@ -3,13 +3,13 @@
 export default [
   {
     "name": "title",
-    "component": "input",
+    "component": "dyn-input",
     "label": "Hlavní titulek",
     "rules": 'required'
   },
   {
     "name": "content",
     "label": "obsah",
-    "component": "textarea"
+    "component": "dyn-textarea"
   }
 ]
