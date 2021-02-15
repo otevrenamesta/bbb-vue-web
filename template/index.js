@@ -2,6 +2,7 @@ import hero from './components/hero.js'
 import imageGrid from './components/imageGrid.js'
 import newsPreview from './components/newsPreview.js'
 import expandable from './components/expandable.js'
+import carousel from './components/carousel.js'
 
 import defaultLayout from './layout/default.js'
 import pageLayout from './layout/page.js'
@@ -14,5 +15,6 @@ Vue.component('hero', hero)
 Vue.component('imageGrid', imageGrid)
 Vue.component('newsPreview', newsPreview)
 Vue.component('expandable', expandable)
+Vue.component('carousel', carousel)
 
 export default { hero, imageGrid, newsPreview }

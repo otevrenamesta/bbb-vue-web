@@ -4,4 +4,11 @@ import newsPreview from './newsPreview.js'
 import MDText from './MDText.js'
 import imageGrid from './imageGrid.js'
 
-export default { hero, MDText, imageGrid, expandable, newsPreview }
+export default {
+  hero,
+  MDText,
+  imageGrid,
+  expandable,
+  newsPreview,
+  carousel: imageGrid
+}

@@ -5,6 +5,7 @@ export default {
    "twitter": null,
    "facebook": "https://www.facebook.com/taborskasetkani",
    "instagram": null,
+   "cdn": "http://data.vxk.cz/ts/wp-content/uploads",
    "menu": [
       {
          "label": "Program",

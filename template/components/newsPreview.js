@@ -8,7 +8,7 @@ export default {
       ]
     }
   },
-  props: ['data'],
+  props: ['data', 'path'],
   template: `
   <section id="newsPreview">
     <div class="row align-items-start" @click="$store.dispatch('edit', {data, path})">

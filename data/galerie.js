@@ -6,9 +6,25 @@ export default {
   "path": "/galerie",
   "children": [
     {
-      "component": "expandable",
-      "title": "Veřejné toalety",
-      "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+      "component": "carousel",
+      "list": [
+        {
+          "url": "/2020/09/1-11.jpg",
+          "name": "Koko3"
+        },
+        {
+          "url": "/2020/09/1-12.jpg",
+          "name": "Koko"
+        },
+        {
+          "url": "/2020/09/1-14.jpg",
+          "name": "CRO2"
+        },
+        {
+          "name": "Kazatel",
+          "url": "/2020/09/1-103.jpg"
+        }
+      ]
     }
   ]
 }
