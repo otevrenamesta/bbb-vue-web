@@ -4,6 +4,7 @@ import newsPreview from './components/newsPreview.js'
 import expandable from './components/expandable.js'
 import carousel from './components/carousel.js'
 import masonry from './components/masonry.js'
+import youtube from './components/youtube.js'
 
 import defaultLayout from './layout/default.js'
 import pageLayout from './layout/page.js'
@@ -18,5 +19,6 @@ Vue.component('newsPreview', newsPreview)
 Vue.component('expandable', expandable)
 Vue.component('carousel', carousel)
 Vue.component('masonry', masonry)
+Vue.component('youtube', youtube)
 
 export default { hero, imageGrid, newsPreview }

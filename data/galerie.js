@@ -6,6 +6,10 @@ export default {
   "path": "/galerie",
   "children": [
     {
+      "component": "youtube",
+      "url": "https://www.youtube.com/embed/UWLE1R6M3ZA"
+    },
+    {
       "component": "masonry",
       "list": [
         {
@@ -45,6 +49,10 @@ export default {
           "name": "Koko3"
         }
       ]
+    },
+    {
+      "component": "youtube",
+      "url": "https://www.youtube.com/embed/Zrc8GBXJDvo"
     }
   ]
 }
