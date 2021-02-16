@@ -5,7 +5,7 @@ export default {
   template: `
   <div :class="data.class">
     <component v-for="(i, idx) in data.children" :key="idx" 
-      :is="i.component" :data="i" :path="path + '.' + idx + '.children'">
+      :is="i.component" :data="i" :path="path + '.children.' + idx">
     </component>
   </div>
   `

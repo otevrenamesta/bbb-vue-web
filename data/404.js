@@ -1,7 +1,8 @@
 export default {
   "title": "Táborská setkání",
   "desc": "stranka pro TS",
-  "components": [
+  "layout": "bbbLayoutDefault",
+  "children": [
     {
       "component": "warning",
       "content": "Stránka neexistuje"

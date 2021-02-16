@@ -1,13 +1,11 @@
 export default {
   props: ['site'],
   template: `
-<footer id="footer">
+  <footer id="footer" class="bg-dark text-light">
+    <div class="container">
+      <div class="row">
 
-    <div class="footer-top">
-      <div class="container">
-        <div class="row">
-
-          <div class="col-lg-4 col-md-6 footer-contact">
+          <div class="col-lg-4 col-md-6">
             <h3>Otevřená města, z. s.</h3>
             <p>
               Malinovského náměstí 624/3 <br>
@@ -38,14 +36,16 @@ export default {
       </div>
     </div>
 
-    <div class="container d-md-flex py-4">
+    <div class="container">
 
       <div class="mr-md-auto text-center text-md-left">
         <div class="copyright">
-          Copyleft <strong><span>Otevřená města</span></strong>. All Rights Removed
+          <a href="https://en.wikipedia.org/wiki/Copyleft">Copyleft</a> <strong>
+            <span>Otevřená města</span></strong>. All Rights Removed
         </div>
       </div>
     </div>
+
     <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
   </footer>
 `}

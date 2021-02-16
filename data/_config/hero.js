@@ -2,22 +2,22 @@ export default [
   {
     "name": "background",
     "label": "pozadi",
-    "component": "input"
+    "component": "dyn-input"
   },
   {
     "name": "title",
-    "component": "input",
+    "component": "dyn-input",
     "label": "Hlavní titulek",
     "rules": 'required'
   },
   {
     "name": "subtitle",
-    "component": "input",
+    "component": "dyn-input",
     "label": "Podtitul"
   },
   {
     "name": "content",
     "label": "obsah",
-    "component": "textarea"
+    "component": "dyn-textarea"
   }
 ]

@@ -1,7 +1,7 @@
 export default {
   props: ['site'],
   template: `
-<header id="header" class="fixed-top d-flex align-items-center">
+<header id="header" class="navbar navbar-expand-lg">
   <div class="container d-flex align-items-center">
 
     <div class="logo mr-auto">
@@ -11,17 +11,17 @@ export default {
     </div>
 
     <nav class="nav-menu d-none d-lg-block">
-      <ul>
-        <li v-for="i in site.menu">
-          <router-link :to="i.link">{{ i.label }}</router-link>
+      <ul class="navbar-nav">
+        <li v-for="i in site.menu" class="nav-item">
+          <router-link class="nav-link" :to="i.link">{{ i.label }}</router-link>
         </li>
       </ul>
     </nav>
 
     <div class="header-social-links">
-      <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
-      <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
-      <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+      <a v-if="site.twitter" :href="site.twitter"><i class="fab fa-twitter"></i></a>
+      <a v-if="site.facebook" :href="site.facebook"><i class="fab fa-facebook"></i></a>
+      <a v-if="site.instagram" :href="site.instagram"><i class="fab fa-instagram"></i></a>
     </div>
 
   </div>

@@ -35,7 +35,7 @@ export default {
     <form @submit.prevent="handleSubmit">
 
       <component v-for="c in form" :key="c.name" 
-        :is="'dyn-' + c.component" :config="c" :data="$store.state.edited.data">
+        :is="c.component" :config="c" :data="$store.state.edited.data">
       </component>
 
       <b-button type="submit" class="mt-3" :disabled="invalid">

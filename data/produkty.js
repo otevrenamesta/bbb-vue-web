@@ -1,42 +1,38 @@
 export default {
-   "title": "Pro navstevniky",
-   "desc": "stranka pro TS",
+   "title": "Produkty",
+   "desc": "stranka pro ukazku galerie",
    "updated_at": "2021-01-18T12:47:37.254Z",
-   "type": "page",
-   "components": [
-  {
-    "component": "composition",
-    "class": "container d-flex flex-column justify-content-center align-items-center",
-    "children": [{
-      "component": "composition",
-      "class": "row",
-      "children": [
-       {
-      "component": "composition",
-      "class": "col-8",
-      "children": [
+   "layout": "bbbLayoutArticle",
+   "children": [{
+      "component": "masonry",
+      "list": [
          {
-            "component": "expandable",
-            "title": "Evakuační plán festivalu",
-            "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+            "url": "https://i0.wp.com/www.ictworks.org/wp-content/uploads/2016/02/open-source-software.png?fit=640%2C337&ssl=1",
+            "name": "Koko3"
          },
          {
-            "component": "expandable",
-            "title": "Evakuační plán festivalu",
-            "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
-         }         
-      ]
-    },{
-      "component": "composition",
-      "class": "col-4",
-      "children": [
+            "url": "https://tridenstechnology.com/wp-content/uploads/2020/02/open-source.png",
+            "name": "Koko3"
+         },
          {
-            "component": "newsPreview",
-            "count": 2
-        }
+            "url": "https://irisns.com/wp-content/uploads/2016/03/open-source.jpg",
+            "name": "Koko3"
+         },
+         {
+            "url": "https://miro.medium.com/max/10000/1*KS1wwco1bkdKyoCv8ctJaQ.jpeg",
+            "name": "Koko3"
+         },
+         {
+            "url": "https://i0.wp.com/notorious-rob.com/wp-content/uploads/2019/03/open-source.jpg?fit=870%2C488&ssl=1",
+            "name": "Koko3"
+         }
       ]
-    }
-    ]}]
-}
-]
+   }],
+   "sidebar": [
+      {
+         "component": "newsPreview",
+         "count": 2
+      }
+   ]
+
 }
