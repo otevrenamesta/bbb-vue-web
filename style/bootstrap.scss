@@ -123,25 +123,8 @@
  #hero {
    width: 100%;
    height: 60vh;
-   background: url("../img/hero-bg.jpg") center center;
    background-size: cover;
-   position: relative;
-   margin-top: 70px;
-   padding: 0;
- }
-
- #hero:before {
-   content: "";
-   background: rgba(56, 64, 70, 0.7);
-   position: absolute;
-   bottom: 0;
-   top: 0;
-   left: 0;
-   right: 0;
- }
-
- #hero .container {
-   z-index: 2;
+   background-position-y: center;
  }
 
  #hero h1 {

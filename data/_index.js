@@ -8,7 +8,7 @@ export default {
   "children": [
     {
       "component": "hero",
-      "background": "https://www.taborskasetkani.eu/wp-content/themes/taborska-setkani/img/slider-bg.jpg",
+      "background": "/TS-web-banner.jpg",
       "title": "Táborská setkání",
       "subtitle": "s podtitulem 600 let na hoře Tábore",
       "content": "Máte rádi atmosféru středověku? Láká vás tradiční hudba, zpěv a veselení pod širým nebem? Pak si nenechte ujít další 28. ročník festivalu Táborská setkání, který se bude konat ve dnech 13.-15. 9. 2019"
