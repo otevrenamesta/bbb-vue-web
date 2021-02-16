@@ -6,24 +6,25 @@ export default {
    "path": "/navstevnici",
    "children": [
       {
-         "component": "expandable",
-         "title": "Veřejné toalety",
-         "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
-      },
-      {
-         "component": "expandable",
-         "title": "Zdravotnická služba",
-         "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
-      },
-      {
-         "component": "expandable",
-         "title": "Evakuační plán festivalu",
-         "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
-      },
-      {
-         "component": "expandable",
-         "title": "Ohňostroj",
-         "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+         "component": "accordion",
+         "sections": [
+            {
+               "title": "Veřejné toalety",
+               "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+            }, {
+               "title": "Zdravotnická služba",
+               "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+         
+            }, {
+               "title": "Evakuační plán festivalu",
+               "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+            
+            }, {
+               "title": "Ohňostroj",
+               "content": "Pořadatelé a účastníci festivalu jsou povinni dodržovat hygienická opatření platná dle aktuální epidemiologické situace."
+            
+            }
+         ]
       }
    ],
    "sidebar": [

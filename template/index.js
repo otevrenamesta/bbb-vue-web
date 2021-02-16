@@ -5,6 +5,7 @@ import expandable from './components/expandable.js'
 import carousel from './components/carousel.js'
 import masonry from './components/masonry.js'
 import youtube from './components/youtube.js'
+import accordion from './components/accordion.js'
 
 import defaultLayout from './layout/default.js'
 import pageLayout from './layout/page.js'
@@ -20,5 +21,6 @@ Vue.component('expandable', expandable)
 Vue.component('carousel', carousel)
 Vue.component('masonry', masonry)
 Vue.component('youtube', youtube)
+Vue.component('accordion', accordion)
 
 export default { hero, imageGrid, newsPreview }
