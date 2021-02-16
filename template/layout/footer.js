@@ -1,7 +1,7 @@
 export default {
   props: ['site'],
   template: `
-<footer id="footer">
+<footer id="footer" class="bg-dark text-light">
   <div class="container">
     <div class="row">
 
