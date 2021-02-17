@@ -883,10 +883,20 @@
    padding: 3em;
  }
 
- #imageGrid img {
-   max-width: 300px;
+ .imageGrid img {
+   max-width: 200px;
  }
 
  .masonry img {
    width: 100%;
+ }
+
+ .disclaimer {
+   background-color: #761800;
+   padding: 4em;
+   font-size: large;
+ }
+
+ #header {
+  background-color: #761800;
  }
