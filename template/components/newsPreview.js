@@ -12,7 +12,7 @@ export default {
   template: `
     <div class="row" @click="$store.dispatch('edit', {data, path})">
       <div v-for="(i, idx) in posts" :key="idx" class="col">
-        <h2>{{ i.title }}</h2>
+        <h3>{{ i.title }}</h3>
         <h4>{{ i.published }}</h4>
         <p>{{ i.content }}</p>
       </div>

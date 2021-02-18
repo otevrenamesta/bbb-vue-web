@@ -14,8 +14,8 @@ export default {
       "content": "Máte rádi atmosféru středověku? Láká vás tradiční hudba, zpěv a veselení pod širým nebem? Pak si nenechte ujít další 28. ročník festivalu Táborská setkání, který se bude konat ve dnech 13.-15. 9. 2019"
     },
     {
-      "component": "fullWidthSection",
-      "class": "disclaimer text-light text-center",
+      "component": "composition",
+      "class": "disclaimer text-light text-center>container>row",
       "children": [
         {
           "component": "MDText",
@@ -26,41 +26,74 @@ export default {
     },
     {
       "component": "composition",
-      "class": "bg-light",
+      "class": "bg-light py-5>container",
+      "children": [
+        {
+          "component": "newsPreview",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "component": "composition",
+      "class": "container py-5",
       "children": [
         {
           "component": "composition",
-          "class": "container",
+          "class": "row",
           "children": [
             {
-              "component": "newsPreview",
-              "count": 3
+              "component": "MDText",
+              "class": "col-12",
+              "content": "## To nejlepší z Programu"
             }
           ]
-        }
-      ]
-    },
-    {
-      "component": "fullWidthSection",
-      "children": [
+        },
         {
-          "component": "toNejZProgramu",
-          "class": "col-12"
+          "component": "toNejZProgramu"
         }
       ]
     },
     {
-      "component": "fullWidthSection",
+      "component": "composition",
+      "class": "tint>container py-5>row",
       "children": [
         {
           "component": "MDText",
+          "class": "col-sm-12 py-2",
+          "content": "## Co se vám může hodit"
+        },
+        {
+          "component": "composition",
+          "class": "col-sm-12>row",
+          "children": [
+            {
+              "component": "MDText",
+              "class": "col-md-4",
+              "content": "### ŽIŽKOVO NÁM\n\nNa tomto nej namesti bude probihat nej program."
+            },
+            {
+              "component": "MDText",
+              "class": "col-md-4",
+              "content": "### ŽIŽKOVO NÁM\n\nNa tomto nej namesti bude probihat nej program."
+            },
+            {
+              "component": "MDText",
+              "class": "col-md-4",
+              "content": "### ŽIŽKOVO NÁM\n\nNa tomto nej namesti bude probihat nej program."
+            }
+          ]
+        },
+        {
+          "component": "MDText",
+          "class": "col-12",
           "content": "Chcete vědět více? prohlídněte si inforamce pro návštěvníky!"
         }
       ]
     },
     {
-      "component": "fullWidthSection",
-      "class": "bg-light",
+      "component": "composition",
+      "class": "bg-light py-5>container",
       "children": [
         {
           "component": "youtube",

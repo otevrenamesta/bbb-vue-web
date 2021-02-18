@@ -7,10 +7,12 @@ export default {
   "children": [
     {
       "component": "youtube",
+      "class": "py-2",
       "url": "https://www.youtube.com/embed/UWLE1R6M3ZA"
     },
     {
       "component": "masonry",
+      "class": "py-2",
       "list": [
         {
           "url": "/2020/09/1-11.jpg",
@@ -52,6 +54,7 @@ export default {
     },
     {
       "component": "youtube",
+      "class": "py-2",
       "url": "https://www.youtube.com/embed/Zrc8GBXJDvo"
     }
   ]
