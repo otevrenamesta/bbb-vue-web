@@ -6,8 +6,6 @@ import pageFooter from './template/layout/footer.js'
 
 import Page from './components/page.js'
 import MDText from './components/mdText.js'
-import EditForm from './components/editForm.js'
-Vue.component('EditForm', EditForm)
 Vue.component('MDText', MDText)
 import _ from './template/index.js'
 
@@ -29,7 +27,6 @@ new Vue({
   components: { pageHeader, pageFooter },
   template: `
   <div>
-    <EditForm v-if="$store.state.edited" />    
     <pageHeader :site="site" />    
     <router-view :key="$route.fullPath" />
     <pageFooter :site="site" />

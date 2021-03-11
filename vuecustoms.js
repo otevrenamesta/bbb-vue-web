@@ -16,9 +16,4 @@ Vue.filter('longDate', function (value) {
 })
 
 Vue.use(VueMarkdown)
-Vue.component('ValidationProvider', VeeValidate.ValidationProvider)
-Vue.component('ValidationObserver', VeeValidate.ValidationObserver)
-
-VeeValidate.extend('required', VeeValidateRules.required)
-
 Vue.component('composition', composition)
