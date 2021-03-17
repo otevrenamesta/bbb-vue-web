@@ -1,5 +1,7 @@
-/* global Vue, _, VueMarkdown, moment, VeeValidate, VeeValidateRules */
+/* global Vue, _, moment */
 import composition from './components/composition.js'
+import MDText from './components/mdText.js'
+Vue.component('MDText', MDText)
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -15,5 +17,4 @@ Vue.filter('longDate', function (value) {
   }
 })
 
-Vue.use(VueMarkdown)
 Vue.component('composition', composition)

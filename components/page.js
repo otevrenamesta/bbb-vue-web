@@ -1,16 +1,37 @@
-import page404 from '../data/404.js'
-import pageData from '../data/index.js'
 
-export default {
-  computed: {
-    page: function () {
-      const idx = this.$router.currentRoute.path
-      return idx in pageData ? pageData[idx] : page404
+const ALREADY_REGISTERED = ['composition', 'MDText']
+
+function findComponents(data, components) {
+  return _.reduce(data.children, (acc, i) => {
+    if (! _.contains(ALREADY_REGISTERED, i.component)) acc.push(i.component)
+    if (i.component === 'composition') {
+      return _.union(findComponents(i, acc), acc)
     }
-  },
-  template: `
-  <component :is="page.layout" :data="page" 
-      :path="$router.currentRoute.path + '.children'">
-  </component>
-  `
+    return acc
+  }, components)   
+}
+
+function loadComponent(name) {
+  const url = API + 'template/components/' + name + '.js'
+  return import(url)
+}
+
+export default async function (path) {
+  const dataReq = await axios.get(API + path)
+  const data = jsyaml.load(dataReq.data)
+  const templateReq = await axios.get(API + 'template/layout/' + data.layout + '.html')
+  const components = findComponents(data, [])
+
+  // zatim global registrace
+  components.map(name => {
+    Vue.component(name, () => loadComponent(name))
+  })
+
+  return {
+    data: () => ({ data, path: null }),
+    created: function () {
+      this.$data.path = this.$router.currentRoute.path
+    },
+    template: templateReq.data
+  }
 }

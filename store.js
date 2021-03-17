@@ -1,5 +1,4 @@
-/* global Vue, Vuex, localStorage, LOGGED_USER, axios, _ */
-import SiteSettings from './data/_site.js'
+/* global Vue, Vuex, localStorage, LOGGED_USER, axios, _, BBB_SITE */
 const loadedUsers = {}
 
 Vue.filter('username', function (uid) {
@@ -9,7 +8,7 @@ Vue.filter('username', function (uid) {
 export default (router) => { return new Vuex.Store({
   state: {
     user: LOGGED_USER,
-    site: SiteSettings,
+    site: BBB_SITE,
     editwindow: null,
     edited: null
   },
