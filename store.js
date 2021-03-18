@@ -1,5 +1,4 @@
-/* global Vue, Vuex, localStorage, LOGGED_USER, axios, _ */
-import SiteSettings from './data/_site.js'
+/* global Vue, Vuex, localStorage, LOGGED_USER, axios, _, BBB_SITE */
 const loadedUsers = {}
 
 Vue.filter('username', function (uid) {
@@ -8,8 +7,9 @@ Vue.filter('username', function (uid) {
 
 export default (router) => { return new Vuex.Store({
   state: {
-    user: LOGGED_USER,
-    site: SiteSettings,
+    user: null,
+    site: BBB_SITE,
+    editwindow: null,
     edited: null
   },
   getters: {
@@ -30,6 +30,10 @@ export default (router) => { return new Vuex.Store({
       state.user = profile
     },
     startEdit: (state, edited) => {
+      if (!state.editwindow) {
+        state.editwindow = window.open(EDITOR, "Editor")
+      }
+      state.editwindow.postMessage(edited, EDITOR)
       state.edited = edited
     },
     stopEdit: function (state) {
@@ -57,3 +61,20 @@ export default (router) => { return new Vuex.Store({
     }
   }
 })}
+
+// window.addEventListener("message", (event) => {
+//   // Do we trust the sender of this message?
+//   if (event.origin !== "http://example.com:8080")
+//     return;
+
+//   // event.source is window.opener
+//   // event.data is "hello there!"
+
+//   // Assuming you've verified the origin of the received message (which
+//   // you must do in any case), a convenient idiom for replying to a
+//   // message is to call postMessage on event.source and provide
+//   // event.origin as the targetOrigin.
+//   event.source.postMessage("hi there yourself!  the secret response " +
+//                            "is: rheeeeet!",
+//                            event.origin);
+// }, false);
