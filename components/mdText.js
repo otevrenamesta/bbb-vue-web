@@ -7,6 +7,6 @@ export default {
     }
   },
   template: `
-  <div :class="data.class" v-html="html" @click="$store.dispatch('edit', {data, path})" />
+  <div :class="data.class" v-html="html" />
   `
 }
