@@ -2,8 +2,10 @@ export default {
   props: ['data', 'path'],
   computed: {
     html: function() {
-      const c = this.$props.data.content
-      return c ? marked(c) : ''
+      const c = _.isString(this.$props.data)
+        ? this.$props.data 
+        : this.$props.data.content
+      return c ? marked.parseInline(c) : ''
     }
   },
   template: `
