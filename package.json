@@ -3,10 +3,10 @@
   "title": "basic building block web",
   "description": "VUE based web",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "start": "browser-sync start --port 8080 --server --files . --single --directory --no-open",
-    "build": "rollup main.js --file public/bundle.js --format iife"
+    "build": "rollup main.js --file dist/bbb-web.js --format iife --name initBBBWeb"
   },
   "author": {
     "name": "Vaclav Klecanda <vencax77@gmail.com>"

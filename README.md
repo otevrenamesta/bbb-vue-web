@@ -23,4 +23,3 @@ Ty jsou v udrzitelnem reseni hostovany mimo (CDN) a web na ne pouze odkazuje.
 
 [Backendova cast](https://github.com/vencax/BBB-cms-api) umoznuje pomoci API:
 - editovat __D__.
-- editovat pomoci webdav styly v SASS.
