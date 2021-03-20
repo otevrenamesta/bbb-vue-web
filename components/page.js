@@ -32,6 +32,15 @@ export default async function (path, api) {
     created: function () {
       this.$data.path = this.$router.currentRoute.path
     },
+    metaInfo () {
+      return {
+        title: this.$data.data.title,
+        meta: [
+          { vmid: 'description', name: 'description', content: this.$data.data.desc },
+          { vmid: 'keywords', name: 'keywords', content: this.$data.data.keywords }
+        ]
+      }
+    },
     template: templateReq.data
   }
 }

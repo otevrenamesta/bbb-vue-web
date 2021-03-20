@@ -23,6 +23,12 @@ export async function init (mountpoint, api, siteconf) {
       pageHeader: () => import(api + 'template/components/header.js'), 
       pageFooter: () => import(api + 'template/components/footer.js')
     },
+    metaInfo: {
+      // if no subcomponents specify a metaInfo.title, this title will be used
+      title: siteconf.defaulttitle || '--',
+      // all titles will be injected into this template
+      titleTemplate: `%s | ${siteconf.title}`
+    },
     template: `
     <div>
       <pageHeader />
