@@ -1,4 +1,4 @@
-/* global axios, API, _ */
+/* global axios, _ */
 
 // const outer = {
 //   props: ['class'],

@@ -11,16 +11,16 @@ function findComponents(data, components) {
   }, components)   
 }
 
-function loadComponent(name) {
-  const url = API + 'template/components/' + name + '.js'
-  return import(url)
-}
-
-export default async function (path) {
-  const dataReq = await axios.get(API + path)
+export default async function (path, api) {
+  const dataReq = await axios.get(api + path)
   const data = jsyaml.load(dataReq.data)
-  const templateReq = await axios.get(API + 'template/layout/' + data.layout + '.html')
+  const templateReq = await axios.get(api + 'template/layout/' + data.layout + '.html')
   const components = findComponents(data, [])
+
+  function loadComponent(name) {
+    const url = api + 'template/components/' + name + '.js'
+    return import(url)
+  }
 
   // zatim global registrace
   components.map(name => {

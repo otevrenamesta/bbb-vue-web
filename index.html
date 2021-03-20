@@ -24,18 +24,21 @@
 
     <script src="http://localhost:3000/ts/settings.js"></script>
 
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.13.0/dist/bootstrap-vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.13.0/dist/bootstrap-vue.css">
+
+    <script type="module">
+      import { init } from './main.js'
       var API = 'http://localhost:3000/ts/' // '/api'
+      
       var EDITOR = 'http://localhost:8080/'
       var LOGGED_USER = {
         groups: ['user_admin']
       }
       axios.defaults.withCredentials = true
+      init('#app', API, BBB_SITE)
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.13.0/dist/bootstrap-vue.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.13.0/dist/bootstrap-vue.css">
 
-    <script src="/main.js" type="module"></script>
   </head>
   <body>
     <div id="app"></div>

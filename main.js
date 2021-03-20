@@ -1,13 +1,12 @@
 /* global Vue, VueRouter */
 import './vuecustoms.js'
 import Store from './store.js'
-
 import Page from './components/page.js'
 
-async function init () {
-  const routesReq = await axios(API + 'routes.json')
+export async function init (mountpoint, api, siteconf) {
+  const routesReq = await axios(api + 'routes.json')
   const webRoutes = _.map(routesReq.data, i => {
-    return { path: i.path, component: () => Page(i.data) }
+    return { path: i.path, component: () => Page(i.data, api) }
   })
   
   const router = new VueRouter({
@@ -15,14 +14,14 @@ async function init () {
       // { path: '/:page?', component: Page },
       // { path: '/clanek/:slug?', component: Page }
   })
-  const store = Store(router)
+  const store = Store(router, siteconf)
 
   new Vue({
     router,
     store,
     components: { 
-      pageHeader: () => import(API + 'template/components/header.js'), 
-      pageFooter: () => import(API + 'template/components/footer.js')
+      pageHeader: () => import(api + 'template/components/header.js'), 
+      pageFooter: () => import(api + 'template/components/footer.js')
     },
     template: `
     <div>
@@ -31,8 +30,6 @@ async function init () {
       <pageFooter />
     </div>
     `
-  }).$mount('#app')
+  }).$mount(mountpoint)
 }
-
-init()
 
