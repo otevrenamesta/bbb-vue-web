@@ -1,4 +1,4 @@
-var initBBBWeb = (function (exports) {
+var initBBBWeb = (function () {
   'use strict';
 
   /* global axios, _ */
@@ -251,8 +251,6 @@ var initBBBWeb = (function (exports) {
     }).$mount(mountpoint);
   }
 
-  exports.init = init;
+  return init;
 
-  return exports;
-
-}({}));
+}());
