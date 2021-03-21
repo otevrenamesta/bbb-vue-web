@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.13.0/dist/bootstrap-vue.css">
     
     <script type="module">
-      import { init } from './main.js'
+      import initBBBWeb from './main.js'
       var API = 'http://localhost:3000/ts/' // '/api'
       
       var EDITOR = 'http://localhost:8080/'
@@ -35,7 +35,7 @@
         groups: ['user_admin']
       }
       axios.defaults.withCredentials = true
-      init('#app', API)
+      initBBBWeb('#app', API)
     </script>
 
   </head>

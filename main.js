@@ -3,7 +3,7 @@ import './vuecustoms.js'
 import Store from './store.js'
 import Page from './components/page.js'
 
-export async function init (mountpoint, api) {
+export default async function init (mountpoint, api) {
   const reqs = await Promise.all([
     axios(api + 'routes.json'),
     axios(api + 'config.json')
