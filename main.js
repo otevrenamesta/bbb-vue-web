@@ -4,18 +4,21 @@ import Store from './store.js'
 import Page from './components/page.js'
 
 export async function init (mountpoint, api) {
-  const routesReq = await axios(api + 'routes.json')
-  const siteconfReq = await axios(api + 'routes.json')
-  const webRoutes = _.map(routesReq.data, i => {
+  const reqs = await Promise.all([
+    axios(api + 'routes.json'),
+    axios(api + 'config.json')
+  ])
+  const webRoutes = _.map(reqs[0].data, i => {
     return { path: i.path, component: () => Page(i.data, api) }
   })
+  const siteconf = reqs[1].data
   
   const router = new VueRouter({
     routes: webRoutes
       // { path: '/:page?', component: Page },
       // { path: '/clanek/:slug?', component: Page }
   })
-  const store = Store(router, siteconfReq.data)
+  const store = Store(router, siteconf)
 
   new Vue({
     router,

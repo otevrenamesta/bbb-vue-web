@@ -7,9 +7,8 @@ Vue.component('markdown', {
   props: ['component', 'text'],
   computed: {
     html: function() {
-      return this.$props.text.indexOf('\n') > 0
-        ? marked(this.$props.text)
-        : marked.parseInline(this.$props.text)
+      const text = this.$props.text || ''
+      return text.indexOf('\n') > 0 ? marked(text) : marked.parseInline(text)
     }
   },
   template: '<span :is="component" v-html="html" />'

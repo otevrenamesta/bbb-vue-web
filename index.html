@@ -23,13 +23,11 @@
     
     <link rel="stylesheet" href="http://localhost:3000/ts/style.css" />
 
-    <script src="http://localhost:3000/ts/settings.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.13.0/dist/bootstrap-vue.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.13.0/dist/bootstrap-vue.css">
     
     <script type="module">
-      import { initBBBWeb } from './main.js'
+      import { init } from './main.js'
       var API = 'http://localhost:3000/ts/' // '/api'
       
       var EDITOR = 'http://localhost:8080/'
@@ -37,7 +35,7 @@
         groups: ['user_admin']
       }
       axios.defaults.withCredentials = true
-      initBBBWeb('#app', API)
+      init('#app', API)
     </script>
 
   </head>
