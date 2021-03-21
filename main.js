@@ -5,8 +5,8 @@ import Page from './components/page.js'
 
 export default async function init (mountpoint, api) {
   const reqs = await Promise.all([
-    axios(api + 'routes.json'),
-    axios(api + 'config.json')
+    axios(api + '/routes.json'),
+    axios(api + '/config.json')
   ])
   const webRoutes = _.map(reqs[0].data, i => {
     return { path: i.path, component: () => Page(i.data, api) }
@@ -24,8 +24,8 @@ export default async function init (mountpoint, api) {
     router,
     store,
     components: { 
-      pageHeader: () => import(api + 'template/components/header.js'), 
-      pageFooter: () => import(api + 'template/components/footer.js')
+      pageHeader: () => import(api + '/template/components/header.js'), 
+      pageFooter: () => import(api + '/template/components/footer.js')
     },
     metaInfo: {
       // if no subcomponents specify a metaInfo.title, this title will be used
