@@ -14,9 +14,8 @@ export default async function init (mountpoint, api) {
   const siteconf = reqs[1].data
   
   const router = new VueRouter({
+    mode: 'history',
     routes: webRoutes
-      // { path: '/:page?', component: Page },
-      // { path: '/clanek/:slug?', component: Page }
   })
   const store = Store(router, siteconf)
 
