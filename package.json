@@ -2,7 +2,7 @@
   "name": "bbb-vue-web",
   "title": "basic building block web",
   "description": "VUE based web",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "main": "main.js",
   "scripts": {
     "start": "browser-sync start --port 8080 --server --files . --single --directory --no-open",
