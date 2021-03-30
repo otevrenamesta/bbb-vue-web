@@ -9,18 +9,24 @@ Vue.component('markdown', {
     html: function() {
       const text = this.$props.text || ''
       return text.indexOf('\n') > 0 ? marked(text) : marked.parseInline(text)
+    },
+    c: function() {
+      return this.$props.component || 'span'
     }
   },
-  template: '<span :is="component" v-html="html" />'
+  template: '<span :is="c" v-html="html" />'
 })
 
 moment.locale('cs')
-Vue.filter('formatDate', function (value) {
+
+function _formatDate (value) {
   if (value) {
     value = _.isString(value) ? moment(value) : value
     return value.format('DD.MM.YYYY')
   }
-})
+}
+Vue.filter('formatDate', _formatDate)
+Vue.filter('date', _formatDate)
 
 Vue.filter('longDate', function (value) {
   if (value) {
