@@ -1,21 +1,9 @@
 /* global Vue, _, moment */
 import composition from './components/composition.js'
 import MDText from './components/mdText.js'
+import markdown from './components/markdown.js'
 Vue.component('MDText', MDText)
-
-Vue.component('markdown', {
-  props: ['component', 'text'],
-  computed: {
-    html: function() {
-      const text = this.$props.text || ''
-      return text.indexOf('\n') > 0 ? marked(text) : marked.parseInline(text)
-    },
-    c: function() {
-      return this.$props.component || 'span'
-    }
-  },
-  template: '<span :is="c" v-html="html" />'
-})
+Vue.component('markdown', markdown)
 
 moment.locale('cs')
 

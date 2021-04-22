@@ -1,3 +1,5 @@
+import linksHijack from './link_hijack.js'
+
 export default {
   props: ['data', 'path'],
   computed: {
@@ -8,7 +10,10 @@ export default {
       return html || ''
     }
   },
+  methods: {
+    handleClicks: linksHijack
+  },
   template: `
-  <div :class="data.class" v-html="html" />
+  <div class="MDText" :class="data.class" v-html="html" @click="handleClicks" />
   `
 }
