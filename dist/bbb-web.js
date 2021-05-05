@@ -225,14 +225,14 @@ var initBBBWeb = (function () {
     }, components)   
   }
 
-  async function Page (path, api) {
-    const dataReq = await axios.get(api + 'data/' + path);
+  async function Page (path, dataUrl) {
+    const dataReq = await axios.get(dataUrl + path);
     const data = jsyaml.load(dataReq.data);
-    const templateReq = await axios.get(api + 'data/template/layout/' + data.layout + '.html');
+    const templateReq = await axios.get(dataUrl + 'template/layout/' + data.layout + '.html');
     const components = findComponents(data, []);
 
     function loadComponent(name) {
-      const url = api + 'data/template/components/' + name + '.js';
+      const url = dataUrl + 'template/components/' + name + '.js';
       return import(url)
     }
 
@@ -245,6 +245,11 @@ var initBBBWeb = (function () {
       data: () => ({ data, path: null }),
       created: function () {
         this.$data.path = this.$router.currentRoute.path;
+      },
+      computed: {
+        components: function () {
+          return _.filter(this.$data.data.children, i => (!i.disabled))
+        }
       },
       metaInfo () {
         return {
@@ -261,13 +266,13 @@ var initBBBWeb = (function () {
 
   /* global Vue, VueRouter */
 
-  async function init (mountpoint, api) {
+  async function init (mountpoint, routesUrl, dataUrl) {
     const reqs = await Promise.all([
-      axios(api + '_files/routes.json'),
-      axios(api + 'data/config.json')
+      axios(routesUrl),
+      axios(dataUrl + 'config.json')
     ]);
     const webRoutes = _.map(reqs[0].data, i => {
-      return { path: i.path, component: () => Page(i.data, api) }
+      return { path: i.path, component: () => Page(i.data, dataUrl) }
     });
     const siteconf = reqs[1].data;
     
@@ -281,8 +286,8 @@ var initBBBWeb = (function () {
       router,
       store,
       components: { 
-        pageHeader: () => import(api + 'data/template/components/header.js'), 
-        pageFooter: () => import(api + 'data/template/components/footer.js')
+        pageHeader: () => import(dataUrl + 'template/components/header.js'), 
+        pageFooter: () => import(dataUrl + 'template/components/footer.js')
       },
       metaInfo: {
         // if no subcomponents specify a metaInfo.title, this title will be used

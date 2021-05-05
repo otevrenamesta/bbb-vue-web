@@ -11,14 +11,14 @@ function findComponents(data, components) {
   }, components)   
 }
 
-export default async function (path, api) {
-  const dataReq = await axios.get(api + 'data/' + path)
+export default async function (path, dataUrl) {
+  const dataReq = await axios.get(dataUrl + path)
   const data = jsyaml.load(dataReq.data)
-  const templateReq = await axios.get(api + 'data/template/layout/' + data.layout + '.html')
+  const templateReq = await axios.get(dataUrl + 'template/layout/' + data.layout + '.html')
   const components = findComponents(data, [])
 
   function loadComponent(name) {
-    const url = api + 'data/template/components/' + name + '.js'
+    const url = dataUrl + 'template/components/' + name + '.js'
     return import(url)
   }
 
@@ -31,6 +31,11 @@ export default async function (path, api) {
     data: () => ({ data, path: null }),
     created: function () {
       this.$data.path = this.$router.currentRoute.path
+    },
+    computed: {
+      components: function () {
+        return _.filter(this.$data.data.children, i => (!i.disabled))
+      }
     },
     metaInfo () {
       return {

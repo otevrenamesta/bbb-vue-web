@@ -3,13 +3,13 @@ import './vuecustoms.js'
 import Store from './store.js'
 import Page from './components/page.js'
 
-export default async function init (mountpoint, api) {
+export default async function init (mountpoint, routesUrl, dataUrl) {
   const reqs = await Promise.all([
-    axios(api + '_files/routes.json'),
-    axios(api + 'data/config.json')
+    axios(routesUrl),
+    axios(dataUrl + 'config.json')
   ])
   const webRoutes = _.map(reqs[0].data, i => {
-    return { path: i.path, component: () => Page(i.data, api) }
+    return { path: i.path, component: () => Page(i.data, dataUrl) }
   })
   const siteconf = reqs[1].data
   
@@ -23,8 +23,8 @@ export default async function init (mountpoint, api) {
     router,
     store,
     components: { 
-      pageHeader: () => import(api + 'data/template/components/header.js'), 
-      pageFooter: () => import(api + 'data/template/components/footer.js')
+      pageHeader: () => import(dataUrl + 'template/components/header.js'), 
+      pageFooter: () => import(dataUrl + 'template/components/footer.js')
     },
     metaInfo: {
       // if no subcomponents specify a metaInfo.title, this title will be used
