@@ -106,6 +106,12 @@ var initBBBWeb = (function () {
   Vue.component('MDText', MDText);
   Vue.component('markdown', markdown);
 
+  Vue.use(VueFinalModal(), { 
+    componentName: 'VueFinalModal',
+    key: '$vfm',    
+    dynamicContainerName: 'ModalsContainer'
+  });
+
   moment.locale('cs');
 
   function _formatDate (value) {
@@ -220,13 +226,13 @@ var initBBBWeb = (function () {
   }
 
   async function Page (path, api) {
-    const dataReq = await axios.get(api + '/' + path);
+    const dataReq = await axios.get(api + 'data/' + path);
     const data = jsyaml.load(dataReq.data);
-    const templateReq = await axios.get(api + '/template/layout/' + data.layout + '.html');
+    const templateReq = await axios.get(api + 'data/template/layout/' + data.layout + '.html');
     const components = findComponents(data, []);
 
     function loadComponent(name) {
-      const url = api + '/template/components/' + name + '.js';
+      const url = api + 'data/template/components/' + name + '.js';
       return import(url)
     }
 
@@ -257,8 +263,8 @@ var initBBBWeb = (function () {
 
   async function init (mountpoint, api) {
     const reqs = await Promise.all([
-      axios(api + '/routes.json'),
-      axios(api + '/config.json')
+      axios(api + '_files/routes.json'),
+      axios(api + 'data/config.json')
     ]);
     const webRoutes = _.map(reqs[0].data, i => {
       return { path: i.path, component: () => Page(i.data, api) }
@@ -275,8 +281,8 @@ var initBBBWeb = (function () {
       router,
       store,
       components: { 
-        pageHeader: () => import(api + '/template/components/header.js'), 
-        pageFooter: () => import(api + '/template/components/footer.js')
+        pageHeader: () => import(api + 'data/template/components/header.js'), 
+        pageFooter: () => import(api + 'data/template/components/footer.js')
       },
       metaInfo: {
         // if no subcomponents specify a metaInfo.title, this title will be used

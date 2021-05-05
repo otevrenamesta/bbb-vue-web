@@ -12,13 +12,13 @@ function findComponents(data, components) {
 }
 
 export default async function (path, api) {
-  const dataReq = await axios.get(api + '/' + path)
+  const dataReq = await axios.get(api + 'data/' + path)
   const data = jsyaml.load(dataReq.data)
-  const templateReq = await axios.get(api + '/template/layout/' + data.layout + '.html')
+  const templateReq = await axios.get(api + 'data/template/layout/' + data.layout + '.html')
   const components = findComponents(data, [])
 
   function loadComponent(name) {
-    const url = api + '/template/components/' + name + '.js'
+    const url = api + 'data/template/components/' + name + '.js'
     return import(url)
   }
 
