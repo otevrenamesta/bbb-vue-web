@@ -106,12 +106,6 @@ var initBBBWeb = (function () {
   Vue.component('MDText', MDText);
   Vue.component('markdown', markdown);
 
-  Vue.use(VueFinalModal(), { 
-    componentName: 'VueFinalModal',
-    key: '$vfm',    
-    dynamicContainerName: 'ModalsContainer'
-  });
-
   moment.locale('cs');
 
   function _formatDate (value) {
@@ -225,42 +219,49 @@ var initBBBWeb = (function () {
     }, components)   
   }
 
-  async function Page (path, dataUrl) {
-    const dataReq = await axios.get(dataUrl + path);
-    const data = jsyaml.load(dataReq.data);
-    const templateReq = await axios.get(dataUrl + 'template/layout/' + data.layout + '.html');
-    const components = findComponents(data, []);
-
+  function pageCreator (dataUrl) {
     function loadComponent(name) {
       const url = dataUrl + 'template/components/' + name + '.js';
       return import(url)
     }
+    // load header and footer
+    Vue.component('pageHeader', () => loadComponent('header'));
+    Vue.component('pageFooter', () => loadComponent('header'));
 
-    // zatim global registrace
-    components.map(name => {
-      Vue.component(name, () => loadComponent(name));
-    });
+    return async function (path) {
+      const dataReq = await axios.get(dataUrl + path);
+      const data = jsyaml.load(dataReq.data);
+      const templateReq = await axios.get(dataUrl + 'template/layout/' + data.layout + '.html');
+      const components = findComponents(data, []);
 
-    return {
-      data: () => ({ data, path: null }),
-      created: function () {
-        this.$data.path = this.$router.currentRoute.path;
-      },
-      computed: {
-        components: function () {
-          return _.filter(this.$data.data.children, i => (!i.disabled))
-        }
-      },
-      metaInfo () {
-        return {
-          title: this.$data.data.title,
-          meta: [
-            { vmid: 'description', name: 'description', content: this.$data.data.desc },
-            { vmid: 'keywords', name: 'keywords', content: this.$data.data.keywords }
-          ]
-        }
-      },
-      template: templateReq.data
+      
+
+      // zatim global registrace
+      components.map(name => {
+        Vue.component(name, () => loadComponent(name));
+      });
+
+      return {
+        data: () => ({ data, path: null }),
+        created: function () {
+          this.$data.path = this.$router.currentRoute.path;
+        },
+        computed: {
+          components: function () {
+            return _.filter(this.$data.data.children, i => (!i.disabled))
+          }
+        },
+        metaInfo () {
+          return {
+            title: this.$data.data.title,
+            meta: [
+              { vmid: 'description', name: 'description', content: this.$data.data.desc },
+              { vmid: 'keywords', name: 'keywords', content: this.$data.data.keywords }
+            ]
+          }
+        },
+        template: templateReq.data
+      }
     }
   }
 
@@ -271,8 +272,9 @@ var initBBBWeb = (function () {
       axios(routesUrl),
       axios(dataUrl + 'config.json')
     ]);
+    const pageCreator$1 = pageCreator(dataUrl);
     const webRoutes = _.map(reqs[0].data, i => {
-      return { path: i.path, component: () => Page(i.data, dataUrl) }
+      return { path: i.path, component: () => pageCreator$1(i.data) }
     });
     const siteconf = reqs[1].data;
     
@@ -285,23 +287,13 @@ var initBBBWeb = (function () {
     new Vue({
       router,
       store,
-      components: { 
-        pageHeader: () => import(dataUrl + 'template/components/header.js'), 
-        pageFooter: () => import(dataUrl + 'template/components/footer.js')
-      },
       metaInfo: {
         // if no subcomponents specify a metaInfo.title, this title will be used
         title: siteconf.defaulttitle || '--',
         // all titles will be injected into this template
         titleTemplate: `%s | ${siteconf.title}`
       },
-      template: `
-    <div>
-      <pageHeader />
-      <router-view :key="$route.fullPath" />
-      <pageFooter />
-    </div>
-    `
+      template: `<router-view :key="$route.fullPath" />`
     }).$mount(mountpoint);
   }
 
