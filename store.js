@@ -13,6 +13,13 @@ export default (router, siteconf) => { return new Vuex.Store({
     edited: null
   },
   getters: {
+    mediaUrl: (state) => (media) => {
+      return _.isString(media)
+        ? media.match(/^https?:\/\//)
+          ? `${siteconf.cdn}/?url=${encodeURIComponent(media)}`
+          : `${siteconf.cdn}/${media}`
+        : `${siteconf.cdn}/${media.id}/${media.filename}`
+    }
     // userLogged: state => {
     //   return state.user !== null
     // },
@@ -28,25 +35,12 @@ export default (router, siteconf) => { return new Vuex.Store({
   mutations: {
     profile: (state, profile) => {
       state.user = profile
-    },
-    // startEdit: (state, edited) => {
-    //   if (!state.editwindow) {
-    //     state.editwindow = window.open(EDITOR, "Editor")
-    //   }
-    //   state.editwindow.postMessage(edited, EDITOR)
-    //   state.edited = edited
-    // },
-    // stopEdit: function (state) {
-    //   state.edited = null
-    // },
+    }
   },
   actions: {
     toast: function (ctx, opts) {
       Vue.$toast.open(opts)
     },
-    // edit: function (ctx, opts) {
-    //   ctx.commit('startEdit', opts)
-    // },
     loadusers: function (ctx, opts) {
       const toBeLoaded = _.filter(opts, i => !(i in loadedUsers))
       return new Promise(resolve => {
@@ -61,20 +55,3 @@ export default (router, siteconf) => { return new Vuex.Store({
     }
   }
 })}
-
-// window.addEventListener("message", (event) => {
-//   // Do we trust the sender of this message?
-//   if (event.origin !== "http://example.com:8080")
-//     return;
-
-//   // event.source is window.opener
-//   // event.data is "hello there!"
-
-//   // Assuming you've verified the origin of the received message (which
-//   // you must do in any case), a convenient idiom for replying to a
-//   // message is to call postMessage on event.source and provide
-//   // event.origin as the targetOrigin.
-//   event.source.postMessage("hi there yourself!  the secret response " +
-//                            "is: rheeeeet!",
-//                            event.origin);
-// }, false);
