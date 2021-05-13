@@ -1,5 +1,6 @@
 
 const ALREADY_REGISTERED = ['composition', 'MDText']
+const _loaded = {}
 
 function findComponents(data, components) {
   return _.reduce(data.children, (acc, i) => {
@@ -11,14 +12,19 @@ function findComponents(data, components) {
   }, components)   
 }
 
-export default function pageCreator (dataUrl) {
+export default function pageCreator (dataUrl, siteconf) {
   function loadComponent(name) {
+    if (_loaded[name]) return _loaded[name]
     const url = dataUrl + '_components/' + name + '.js'
-    return import(url)
+    _loaded[name] = import(url)
+    return _loaded[name]
   }
   // load header and footer
   Vue.component('pageHeader', () => loadComponent('header'))
   Vue.component('pageFooter', () => loadComponent('footer'))
+  _.map(siteconf.globalComponents, i => {
+    Vue.component(i, () => loadComponent(i))
+  })
 
   return async function (path) {
     const dataReq = await axios.get(dataUrl + path)

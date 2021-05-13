@@ -8,11 +8,11 @@ export default async function init (mountpoint, routesUrl, dataUrl) {
     axios(routesUrl),
     axios(dataUrl + 'config.json')
   ])
-  const pageCreator = PageCreator(dataUrl)
+  const siteconf = reqs[1].data
+  const pageCreator = PageCreator(dataUrl, siteconf)
   const webRoutes = _.map(reqs[0].data, i => {
     return { path: i.path, component: () => pageCreator(i.data) }
   })
-  const siteconf = reqs[1].data
   
   const router = new VueRouter({
     mode: 'history',
