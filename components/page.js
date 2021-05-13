@@ -13,20 +13,18 @@ function findComponents(data, components) {
 
 export default function pageCreator (dataUrl) {
   function loadComponent(name) {
-    const url = dataUrl + 'template/components/' + name + '.js'
+    const url = dataUrl + '_components/' + name + '.js'
     return import(url)
   }
   // load header and footer
   Vue.component('pageHeader', () => loadComponent('header'))
-  Vue.component('pageFooter', () => loadComponent('header'))
+  Vue.component('pageFooter', () => loadComponent('footer'))
 
   return async function (path) {
     const dataReq = await axios.get(dataUrl + path)
     const data = jsyaml.load(dataReq.data)
-    const templateReq = await axios.get(dataUrl + 'template/layout/' + data.layout + '.html')
+    const templateReq = await axios.get(dataUrl + '_layouts/' + data.layout + '.html')
     const components = findComponents(data, [])
-
-    
 
     // zatim global registrace
     components.map(name => {
