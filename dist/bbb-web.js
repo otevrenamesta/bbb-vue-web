@@ -208,6 +208,7 @@ var initBBBWeb = (function () {
   // }, false);
 
   const ALREADY_REGISTERED = ['composition', 'MDText'];
+  const _loaded = {};
 
   function findComponents(data, components) {
     return _.reduce(data.children, (acc, i) => {
@@ -219,14 +220,19 @@ var initBBBWeb = (function () {
     }, components)   
   }
 
-  function pageCreator (dataUrl) {
+  function pageCreator (dataUrl, siteconf) {
     function loadComponent(name) {
+      if (_loaded[name]) return _loaded[name]
       const url = dataUrl + '_components/' + name + '.js';
-      return import(url)
+      _loaded[name] = import(url);
+      return _loaded[name]
     }
     // load header and footer
     Vue.component('pageHeader', () => loadComponent('header'));
     Vue.component('pageFooter', () => loadComponent('footer'));
+    _.map(siteconf.globalComponents, i => {
+      Vue.component(i, () => loadComponent(i));
+    });
 
     return async function (path) {
       const dataReq = await axios.get(dataUrl + path);
@@ -270,11 +276,11 @@ var initBBBWeb = (function () {
       axios(routesUrl),
       axios(dataUrl + 'config.json')
     ]);
-    const pageCreator$1 = pageCreator(dataUrl);
+    const siteconf = reqs[1].data;
+    const pageCreator$1 = pageCreator(dataUrl, siteconf);
     const webRoutes = _.map(reqs[0].data, i => {
       return { path: i.path, component: () => pageCreator$1(i.data) }
     });
-    const siteconf = reqs[1].data;
     
     const router = new VueRouter({
       mode: 'history',
