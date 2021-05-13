@@ -13,12 +13,13 @@ export default (router, siteconf) => { return new Vuex.Store({
     edited: null
   },
   getters: {
-    mediaUrl: (state) => (media) => {
+    mediaUrl: (state) => (media, params) => {
+      const p = _.isArray(params) ? params.join('&') : params
       return _.isString(media)
         ? media.match(/^https?:\/\//)
-          ? `${siteconf.cdn}/?url=${encodeURIComponent(media)}`
-          : `${siteconf.cdn}/${media}`
-        : `${siteconf.cdn}/${media.id}/${media.filename}`
+          ? `${siteconf.cdn}/?url=${encodeURIComponent(media)}&${p}`
+          : `${siteconf.cdn}/${media}?${p}`
+        : `${siteconf.cdn}/${media.id}/${media.filename}?${p}`
     }
     // userLogged: state => {
     //   return state.user !== null
