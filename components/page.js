@@ -15,7 +15,7 @@ function findComponents(data, components) {
 export default function pageCreator (dataUrl, siteconf) {
   function loadComponent(name) {
     if (_loaded[name]) return _loaded[name]
-    const url = dataUrl + '_components/' + name + '.js'
+    const url = dataUrl + '_service/components/' + name + '.js'
     _loaded[name] = import(url)
     return _loaded[name]
   }
@@ -29,7 +29,8 @@ export default function pageCreator (dataUrl, siteconf) {
   return async function (path) {
     const dataReq = await axios.get(dataUrl + path)
     const data = jsyaml.load(dataReq.data)
-    const templateReq = await axios.get(dataUrl + '_layouts/' + data.layout + '.html')
+    const url = dataUrl + '_service/layouts/' + data.layout + '.html'
+    const templateReq = await axios.get(url)
     const components = findComponents(data, [])
 
     // zatim global registrace

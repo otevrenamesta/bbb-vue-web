@@ -15,7 +15,7 @@ var initBBBWeb = (function () {
         innerClasses: null
       }
     },
-    props: ['data', 'path'],
+    props: ['data'],
     mounted() {
       const parts = this.$props.data.class ? this.$props.data.class.split('>') : [];
       this.$data.innerClasses = parts.length > 1 ? parts.slice(1) : null;
@@ -28,10 +28,9 @@ var initBBBWeb = (function () {
     },
     template: `
   <div :class="myClass">
-    <composition v-if="innerClasses" :data="restdata" :path="path" />
+    <composition v-if="innerClasses" :data="restdata" />
     <component v-else v-for="(i, idx) in data.children" :key="idx" 
-      :is="i.component" :data="i" :path="path + '.children.' + idx">
-    </component>
+      :is="i.component" :data="i" />
   </div>
   `
   };
@@ -68,7 +67,7 @@ var initBBBWeb = (function () {
   }
 
   var MDText = {
-    props: ['data', 'path'],
+    props: ['data'],
     computed: {
       html: function() {
         const html = _.isString(this.$props.data)
@@ -201,7 +200,7 @@ var initBBBWeb = (function () {
   function pageCreator (dataUrl, siteconf) {
     function loadComponent(name) {
       if (_loaded[name]) return _loaded[name]
-      const url = dataUrl + '_components/' + name + '.js';
+      const url = dataUrl + '_service/components/' + name + '.js';
       _loaded[name] = import(url);
       return _loaded[name]
     }
@@ -215,7 +214,8 @@ var initBBBWeb = (function () {
     return async function (path) {
       const dataReq = await axios.get(dataUrl + path);
       const data = jsyaml.load(dataReq.data);
-      const templateReq = await axios.get(dataUrl + '_layouts/' + data.layout + '.html');
+      const url = dataUrl + '_service/layouts/' + data.layout + '.html';
+      const templateReq = await axios.get(url);
       const components = findComponents(data, []);
 
       // zatim global registrace

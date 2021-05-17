@@ -1,7 +1,7 @@
 import linksHijack from './link_hijack.js'
 
 export default {
-  props: ['data', 'path'],
+  props: ['data'],
   computed: {
     html: function() {
       const html = _.isString(this.$props.data)
