@@ -9,6 +9,8 @@ Zakladni myslenky udrzitelneho systemu pro spravu webu:
 - web jako JS aplikace konzumujici data z ruznych zdroju
 - moznost generovat static web pro uzivatele s vypnutyn JS (resi se headless browserem)
 
+> web jako lepidlo open dat z ruznych zdroju, ktere ty data hezky vyrenderuje.
+
 ## Web data - slozka statickych textovych souboru
 
 - data (__D__) - jednotlive stranky jsou ve forme yaml souboru - nejuspornejsi 
@@ -38,9 +40,4 @@ Kazdy ma:
 __V repositari nejsou zadne assety.__
 Ty jsou v udrzitelnem reseni hostovany mimo (CDN) a web na ne pouze odkazuje.
 
-## Backend
-
-[Backendova cast](https://github.com/otevrenamesta/bbb-cms-api) umoznuje:
-- pomoci API editovat __D__.
-- pomoci webDAV protokolu editovat celou **_service** slozku - pristup pro webare, spravce, ...
-- renderovat seznam routes webu ze stromu souboru YAML.
+## [Backendova cast ZDE](https://github.com/otevrenamesta/bbb-cms-api)
