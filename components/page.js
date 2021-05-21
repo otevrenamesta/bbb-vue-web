@@ -50,10 +50,16 @@ export default function pageCreator (dataUrl, siteconf) {
       },
       metaInfo () {
         return {
+          htmlAttrs: {
+            lang: this.$data.data.lang || siteconf.lang || 'cs'
+          },
           title: this.$data.data.title,
           meta: [
             { vmid: 'description', name: 'description', content: this.$data.data.desc },
             { vmid: 'keywords', name: 'keywords', content: this.$data.data.keywords }
+          ],
+          noscript: [
+            { innerHTML: 'Tento web potřebuje zapnutý JavaScript.' }
           ]
         }
       },
