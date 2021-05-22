@@ -3,12 +3,13 @@ import './vuecustoms.js'
 import Store from './store.js'
 import PageCreator from './components/page.js'
 
-export default async function init (mountpoint, routesUrl, dataUrl) {
+export default async function init (mountpoint, serviceUrl, dataUrl) {
   const reqs = await Promise.all([
-    axios(routesUrl),
+    axios(serviceUrl + 'routes.json'),
     axios(dataUrl + 'config.json')
   ])
   const siteconf = reqs[1].data
+  Object.assign(siteconf, { serviceUrl, dataUrl })
   const pageCreator = PageCreator(dataUrl, siteconf)
   const webRoutes = _.map(reqs[0].data, i => {
     return { path: i.path, component: () => pageCreator(i.data) }

@@ -2,7 +2,9 @@
 import composition from './components/composition.js'
 import MDText from './components/mdText.js'
 import markdown from './components/markdown.js'
+import sitemap from './components/sitemap.js'
 Vue.component('MDText', MDText)
+Vue.component('sitemap', sitemap)
 Vue.component('markdown', markdown)
 
 moment.locale('cs')

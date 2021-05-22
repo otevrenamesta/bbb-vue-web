@@ -1,5 +1,5 @@
 
-const ALREADY_REGISTERED = ['composition', 'MDText']
+const ALREADY_REGISTERED = ['composition', 'MDText', 'sitemap']
 const _loaded = {}
 
 function findComponents(data, components) {
