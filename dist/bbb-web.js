@@ -207,7 +207,9 @@ var initBBBWeb = (function () {
     },
     getters: {
       mediaUrl: (state) => (media, params) => {
-        const p = _.isArray(params) ? params.join('&') : params;
+        const p = params 
+          ? _.isArray(params) ? params.join('&') : params
+          : '';
         return _.isString(media)
           ? media.match(/^https?:\/\//)
             ? `${siteconf.cdn}/?url=${encodeURIComponent(media)}&${p}`
