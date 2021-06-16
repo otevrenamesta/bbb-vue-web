@@ -21,6 +21,9 @@ export default function (event) {
     }
     // don't handle same page links/anchors
     const url = new URL(target.href)
+    if (to.match(/^https?:\/\//) || to.match(/^\/cdn\//)) {
+      return window.open(url)
+    }
     const to = url.pathname
     if (window.location.pathname !== to && event.preventDefault) {
       event.preventDefault()
