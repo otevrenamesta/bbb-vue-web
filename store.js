@@ -14,14 +14,11 @@ export default (router, siteconf) => { return new Vuex.Store({
   },
   getters: {
     mediaUrl: (state) => (media, params) => {
-      const p = params 
-        ? _.isArray(params) ? params.join('&') : params
-        : ''
-      return _.isString(media)
-        ? media.match(/^https?:\/\//)
-          ? `${siteconf.cdn}/?url=${encodeURIComponent(media)}&${p}`
-          : `${siteconf.cdn}/${media}?${p}`
-        : `${siteconf.cdn}/${media.id}/${media.filename}?${p}`
+      const murl = _.isString(media)
+          ? encodeURIComponent(media)
+          : `${siteconf.cdn}/${media.id}/${media.filename}`
+      if (!params && !media.match(/^https?:\/\//)) return murl
+      return `${siteconf.cdn}/api/resize/?url=${murl}&${params}`
     }
     // userLogged: state => {
     //   return state.user !== null
