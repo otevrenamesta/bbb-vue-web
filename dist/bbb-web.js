@@ -211,11 +211,12 @@ var initBBBWeb = (function () {
     },
     getters: {
       mediaUrl: (state) => (media, params) => {
+        const isVector = (url) => url.match(/.*.svg$/);
         const murl = _.isObject(media)
             ? `${siteconf.cdn}/${media.id}/${media.filename}`
             : media.match(/^https?:\/\//)
               ? media : `${siteconf.cdn}/${media}`;
-        if (!params && !murl.match(/^https?:\/\//)) return murl
+        if (isVector || (!params && !murl.match(/^https?:\/\//))) return murl
         return `${siteconf.cdn}/api/resize/?url=${encodeURIComponent(murl)}&${params}`
       }
       // userLogged: state => {
