@@ -60,7 +60,8 @@ var initBBBWeb = (function () {
       const url = new URL(target.href);
       const to = url.pathname;
       if (to.match(/^https?:\/\//) || to.match(/^\/cdn\//)) {
-        return window.open(url, '_blank')
+        window.open(url, '_blank');
+        return 
       }
       if (window.location.pathname !== to && event.preventDefault) {
         event.preventDefault();
