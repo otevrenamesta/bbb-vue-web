@@ -216,7 +216,7 @@ var initBBBWeb = (function () {
             : media.match(/^https?:\/\//)
               ? media : `${siteconf.cdn}/${media}`;
         if (!params && !murl.match(/^https?:\/\//)) return murl
-        return `${siteconf.cdn}/api/resize/?url=${murl}&${params}`
+        return `${siteconf.cdn}/api/resize/?url=${encodeURIComponent(murl)}&${params}`
       }
       // userLogged: state => {
       //   return state.user !== null
