@@ -211,9 +211,10 @@ var initBBBWeb = (function () {
     },
     getters: {
       mediaUrl: (state) => (media, params) => {
-        const murl = _.isString(media)
-            ? encodeURIComponent(media)
-            : `${siteconf.cdn}/${media.id}/${media.filename}`;
+        const murl = _.isObject(media)
+            ? `${siteconf.cdn}/${media.id}/${media.filename}`
+            : media.match(/^https?:\/\//)
+              ? media : `${siteconf.cdn}/${media}`;
         if (!params && !murl.match(/^https?:\/\//)) return murl
         return `${siteconf.cdn}/api/resize/?url=${murl}&${params}`
       }
