@@ -58,6 +58,9 @@ var initBBBWeb = (function () {
       }
       // don't handle same page links/anchors
       const url = new URL(target.href);
+      if (to.match(/^https?:\/\//) || to.match(/^\/cdn\//)) {
+        return window.open(url)
+      }
       const to = url.pathname;
       if (window.location.pathname !== to && event.preventDefault) {
         event.preventDefault();
@@ -207,14 +210,11 @@ var initBBBWeb = (function () {
     },
     getters: {
       mediaUrl: (state) => (media, params) => {
-        const p = params 
-          ? _.isArray(params) ? params.join('&') : params
-          : '';
-        return _.isString(media)
-          ? media.match(/^https?:\/\//)
-            ? `${siteconf.cdn}/?url=${encodeURIComponent(media)}&${p}`
-            : `${siteconf.cdn}/${media}?${p}`
-          : `${siteconf.cdn}/${media.id}/${media.filename}?${p}`
+        const murl = _.isString(media)
+            ? encodeURIComponent(media)
+            : `${siteconf.cdn}/${media.id}/${media.filename}`;
+        if (!params && !media.match(/^https?:\/\//)) return murl
+        return `${siteconf.cdn}/api/resize/?url=${murl}&${params}`
       }
       // userLogged: state => {
       //   return state.user !== null
