@@ -213,7 +213,7 @@ var initBBBWeb = (function () {
         const murl = _.isString(media)
             ? encodeURIComponent(media)
             : `${siteconf.cdn}/${media.id}/${media.filename}`;
-        if (!params && !media.match(/^https?:\/\//)) return murl
+        if (!params && !murl.match(/^https?:\/\//)) return murl
         return `${siteconf.cdn}/api/resize/?url=${murl}&${params}`
       }
       // userLogged: state => {
