@@ -216,7 +216,7 @@ var initBBBWeb = (function () {
             ? `${siteconf.cdn}/${media.id}/${media.filename}`
             : media.match(/^https?:\/\//)
               ? media : `${siteconf.cdn}/${media}`;
-        if (isVector || (!params && !murl.match(/^https?:\/\//))) return murl
+        if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) return murl
         return `${siteconf.cdn}/api/resize/?url=${encodeURIComponent(murl)}&${params}`
       }
       // userLogged: state => {
