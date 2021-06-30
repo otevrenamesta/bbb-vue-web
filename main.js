@@ -19,7 +19,7 @@ export default async function init (mountpoint, serviceUrl, dataUrl) {
     mode: 'history',
     routes: webRoutes
   })
-  const store = Store(router, siteconf)
+  const store = Store(siteconf)
 
   new Vue({
     router,

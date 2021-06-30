@@ -202,11 +202,10 @@ var initBBBWeb = (function () {
     return loadedUsers[uid] || 'unknown'
   });
 
-  var Store = (router, siteconf) => { return new Vuex.Store({
+  var Store = (siteconf) => { return new Vuex.Store({
     state: {
       user: null,
-      site: siteconf,
-      router
+      site: siteconf
     },
     getters: {
       mediaUrl: (state) => (media, params) => {
@@ -341,7 +340,7 @@ var initBBBWeb = (function () {
       mode: 'history',
       routes: webRoutes
     });
-    const store = Store(router, siteconf);
+    const store = Store(siteconf);
 
     new Vue({
       router,

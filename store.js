@@ -5,11 +5,10 @@ Vue.filter('username', function (uid) {
   return loadedUsers[uid] || 'unknown'
 })
 
-export default (router, siteconf) => { return new Vuex.Store({
+export default (siteconf) => { return new Vuex.Store({
   state: {
     user: null,
-    site: siteconf,
-    router
+    site: siteconf
   },
   getters: {
     mediaUrl: (state) => (media, params) => {
