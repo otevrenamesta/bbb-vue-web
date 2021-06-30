@@ -9,16 +9,17 @@ export default (router, siteconf) => { return new Vuex.Store({
   state: {
     user: null,
     site: siteconf,
-    editwindow: null,
-    edited: null
+    router
   },
   getters: {
     mediaUrl: (state) => (media, params) => {
-      const murl = _.isString(media)
-          ? encodeURIComponent(media)
-          : `${siteconf.cdn}/${media.id}/${media.filename}`
-      if (!params && !media.match(/^https?:\/\//)) return murl
-      return `${siteconf.cdn}/api/resize/?url=${murl}&${params}`
+      const isVector = (url) => url.match(/.*.svg$/)
+      const murl = _.isObject(media)
+          ? `${siteconf.cdn}/${media.id}/${media.filename}`
+          : media.match(/^https?:\/\//)
+            ? media : `${siteconf.cdn}/${media}`
+      if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) return murl
+      return `${siteconf.cdn}/api/resize/?url=${encodeURIComponent(murl)}&${params}`
     }
     // userLogged: state => {
     //   return state.user !== null
