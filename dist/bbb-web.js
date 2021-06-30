@@ -206,8 +206,7 @@ var initBBBWeb = (function () {
     state: {
       user: null,
       site: siteconf,
-      editwindow: null,
-      edited: null
+      router
     },
     getters: {
       mediaUrl: (state) => (media, params) => {
