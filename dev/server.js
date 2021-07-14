@@ -11,6 +11,7 @@ async function init () {
   bs.init({
     server: [ DEV_DIR, INDEX_DIR ],
     port: 8080,
+    single: true,
     open: false,
     ui: false,
     serveStatic: [{

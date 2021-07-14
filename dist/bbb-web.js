@@ -322,18 +322,107 @@ var initBBBWeb = (function () {
     }
   }
 
+  const ALREADY_REGISTERED$1 = ['composition', 'MDText', 'sitemap'];
+  const _loaded$1 = {};
+
+  function findComponents$1(data, components) {
+    return _.reduce(data.children, (acc, i) => {
+      if (! _.contains(ALREADY_REGISTERED$1, i.component)) acc.push(i.component);
+      if (i.component === 'composition') {
+        return _.union(findComponents$1(i, acc), acc)
+      }
+      return acc
+    }, components)
+  }
+
+  function detailPageCreator (dataUrl, siteconf) {
+    function loadComponent(name) {
+      if (_loaded$1[name]) return _loaded$1[name]
+      const url = dataUrl + '_service/components/' + name + '.js';
+      _loaded$1[name] = import(url);
+      return _loaded$1[name]
+    }
+    // load header and footer
+    Vue.component('pageHeader', () => loadComponent('header'));
+    Vue.component('pageFooter', () => loadComponent('footer'));
+    _.map(siteconf.globalComponents, i => {
+      Vue.component(i, () => loadComponent(i));
+    });
+
+    return async function (config) {
+      const templateUrl = dataUrl + '_service/layouts/' + config.layout + '.html';
+      
+      const templateReq = await axios.get(templateUrl);
+      const components = findComponents$1(config, []);
+
+      // zatim global registrace
+      components.map(name => {
+        Vue.component(name, () => loadComponent(name));
+      });
+
+      return {
+        data: () => ({ item: null, config, loading: true }),
+        created: async function () {
+          const id = this.$router.currentRoute.params.id;
+          const dataurl = config.url.replace('{{ID}}', id);
+          this.$data.item = (await axios.get(dataurl)).data[0];
+          this.$data.loading = false;
+        },
+        computed: {
+          components: function () {
+            return _.filter(this.$data.data.children, i => (!i.disabled))
+          }
+        },
+        metaInfo () {
+          return this.$data.item ? {
+            htmlAttrs: {
+              lang: this.$data.item.lang || siteconf.lang || 'cs'
+            },
+            title: this.$data.item[config.titleattr],
+            meta: [
+              { vmid: 'description', name: 'description', content: this.$data.item.desc },
+              { vmid: 'keywords', name: 'keywords', content: this.$data.item.keywords }
+            ],
+            noscript: [
+              { innerHTML: 'Tento web potřebuje zapnutý JavaScript.' }
+            ]
+          } : {}
+        },
+        template: templateReq.data
+      }
+    }
+  }
+
+  async function loadSiteConf (serviceUrl, dataUrl) {
+    let siteconf = null;
+    try {
+      const r = await axios(serviceUrl + 'config.yaml');
+      siteconf = jsyaml.load(r.data);
+    } catch (err) {
+      const r = await axios(dataUrl + 'config.json');
+      siteconf = r.data;
+    }
+    return Object.assign(siteconf, { serviceUrl, dataUrl })
+  }
+
   /* global Vue, VueRouter */
 
   async function init (mountpoint, serviceUrl, dataUrl) {
     const reqs = await Promise.all([
       axios(serviceUrl + 'routes.json'),
-      axios(dataUrl + 'config.json')
+      loadSiteConf(serviceUrl, dataUrl)
     ]);
-    const siteconf = reqs[1].data;
-    Object.assign(siteconf, { serviceUrl, dataUrl });
+    const siteconf = reqs[1];
     const pageCreator$1 = pageCreator(dataUrl, siteconf);
+    const detailPageCreator$1 = detailPageCreator(dataUrl, siteconf);
     const webRoutes = _.map(reqs[0].data, i => {
       return { path: i.path, component: () => pageCreator$1(i.data) }
+    });
+    _.map(siteconf.detailpages, i => {
+      webRoutes.push({ 
+        path: `${i.path}:id`, 
+        component: () => detailPageCreator$1(i) 
+      });
     });
     
     const router = new VueRouter({
