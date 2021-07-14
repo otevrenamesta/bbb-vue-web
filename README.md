@@ -41,3 +41,10 @@ __V repositari nejsou zadne assety.__
 Ty jsou v udrzitelnem reseni hostovany mimo (CDN) a web na ne pouze odkazuje.
 
 ## [Backendova cast ZDE](https://github.com/otevrenamesta/bbb-cms-api)
+
+## Development
+
+Run dev mode:
+```
+DATA_FOLDER=/path/to/your/bbb-web npm start
+```
