@@ -419,10 +419,10 @@ var initBBBWeb = (function () {
       return { path: i.path, component: () => pageCreator$1(i.data) }
     });
     _.map(siteconf.detailpages, i => {
-      webRoutes.push({ 
-        path: `${i.path}:id`, 
-        component: () => detailPageCreator$1(i) 
-      });
+      const route = i.component
+        ? { path: i.path, component: () => import(i.component) }
+        : { path: `${i.path}:id`, component: () => detailPageCreator$1(i) };
+      webRoutes.push(route);
     });
     
     const router = new VueRouter({
