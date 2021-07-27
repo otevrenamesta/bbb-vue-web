@@ -17,11 +17,13 @@ export default async function init (mountpoint, serviceUrl, dataUrl) {
     return { path: i.path, component: () => pageCreator(i.data) }
   })
   _.map(siteconf.detailpages, i => {
-    webRoutes.push({ 
-      path: `${i.path}:id`, 
-      component: () => detailPageCreator(i) 
-    })
+    const route = i.component
+      ? { path: i.path, component: () => import(i.component) }
+      : { path: `${i.path}:id`, component: () => detailPageCreator(i) }
+    webRoutes.push(route)
   })
+
+  webRoutes.push()
   
   const router = new VueRouter({
     mode: 'history',
