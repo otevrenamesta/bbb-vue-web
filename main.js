@@ -22,6 +22,8 @@ export default async function init (mountpoint, serviceUrl, dataUrl) {
       : { path: `${i.path}:id`, component: () => detailPageCreator(i) }
     webRoutes.push(route)
   })
+
+  webRoutes.push()
   
   const router = new VueRouter({
     mode: 'history',
