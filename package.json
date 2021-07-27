@@ -14,7 +14,8 @@
   "license": "BSD",
   "devDependencies": {
     "browser-sync": "^2.24.1",
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "http-proxy-middleware": "^2.0.1"
   },
   "dependencies": {
     "rollup": "^1.29.1"
