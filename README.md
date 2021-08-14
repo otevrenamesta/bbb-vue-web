@@ -1,17 +1,25 @@
 # bbb - basic building block web
 
-Zakladni myslenky udrzitelneho systemu pro spravu webu:
-- maximalni oddeleni:
-  - visualni styl (__S__) (CSS)
-  - template (__T__) = jaky HTML kod se bude generovat
-  - data (__D__) = struktura komponent tvoricich jednotlive stranky a jejich texty
-- data v textovych souborech (daji se eventualne verzovat, [napr. web OM](https://github.com/otevrenamesta/web)).
+### Manažerské shrnutí
+
+bbb je web řešení na bázi [jamstack](https://jamstack.org/).
+Přoč je tento směr budoucností a jaké přináší výhody oproti tradičním [se píše např. zde](https://www.rascasone.com/cs/blog/co-je-jamstack-vs-wordpress-cms).
+Základní myšlenky udržitelného systému pro správu webu:
+- maximální oddělení:
+  - visualní styl (__S__) (CSS)
+  - template (__T__) = jaký HTML kód se bude generovat
+  - data (__D__) = struktura komponent tvořících jednotlivé stránky a jejich texty
+- data v textových souborech, aby se dali verzovat a rychle servírovat přes CDN.
 - web jako JS aplikace konzumujici data z ruznych zdroju
-- moznost generovat static web pro uzivatele s vypnutyn JS (resi se headless browserem)
+- možnost generovat statický web pro uživatele s vypnutým JS nebo crawlery
 
 > web jako lepidlo open dat z ruznych zdroju, ktere ty data hezky vyrenderuje.
 
+Znamená to, že moderní web se aktualizuje sám díky tomu, že prostě pouze vykresluje otevřená data, která v jiných systémech už beztak vznikají.
+
 ## Web data - slozka statickych textovych souboru
+
+ [Pro příklad web OM](https://github.com/otevrenamesta/web)
 
 - data (__D__) - jednotlive stranky jsou ve forme yaml souboru - nejuspornejsi 
 a nejjednossi zpusob, jak definovat hierarchickou strukturu.
