@@ -195,16 +195,41 @@ var initBBBWeb = (function () {
 
   Vue.component('composition', composition);
 
-  /* global Vue, Vuex, localStorage, LOGGED_USER, axios, _ */
-  const loadedUsers = {};
+  async function loadSiteConf (serviceUrl, dataUrl) {
+    let siteconf = null;
+    try {
+      const r = await axios(serviceUrl + 'config.yaml');
+      siteconf = jsyaml.load(r.data);
+    } catch (err) {
+      const r = await axios(dataUrl + 'config.json');
+      siteconf = r.data;
+    }
+    return Object.assign(siteconf, { serviceUrl, dataUrl })
+  }
 
-  Vue.filter('username', function (uid) {
-    return loadedUsers[uid] || 'unknown'
-  });
+  const KEY = '_BBB_web_user';
 
-  var Store = (siteconf) => { return new Vuex.Store({
+  function initUser () {
+    let user = localStorage.getItem(KEY);
+    user = user ? JSON.parse(user) : null;
+    if (user) return user
+    return axios('/nia/profile')
+      .then(res => {
+        saveUser(res.data);
+        return res.data
+      })
+      .catch(err => {
+        return null
+      })
+  }
+
+  function saveUser (user) {
+    localStorage.setItem(KEY, JSON.stringify(user));
+  }
+
+  var Store = (siteconf, user) => { return new Vuex.Store({
     state: {
-      user: null,
+      user,
       site: siteconf
     },
     getters: {
@@ -216,18 +241,10 @@ var initBBBWeb = (function () {
               ? media : `${siteconf.cdn}/${media}`;
         if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) return murl
         return `${siteconf.cdn}/api/resize/?url=${encodeURIComponent(murl)}&${params}`
+      },
+      userLogged: state => {
+        return state.user !== null
       }
-      // userLogged: state => {
-      //   return state.user !== null
-      // },
-      // UID: state => (state.user.id),
-      // isMember: state => group => {
-      //   try {
-      //     return LOGGED_USER.groups.indexOf(group) >= 0
-      //   } catch (_) {
-      //     return false
-      //   }
-      // }
     },
     mutations: {
       profile: (state, profile) => {
@@ -237,18 +254,6 @@ var initBBBWeb = (function () {
     actions: {
       toast: function (ctx, opts) {
         Vue.$toast.open(opts);
-      },
-      loadusers: function (ctx, opts) {
-        const toBeLoaded = _.filter(opts, i => !(i in loadedUsers));
-        return new Promise(resolve => {
-          toBeLoaded.length === 0 ? resolve() : setTimeout(() => {
-            console.log(`loaded: ${JSON.stringify(toBeLoaded)}`);
-            _.each(toBeLoaded, uid => {
-              loadedUsers[uid] = 'jssjfls' + uid;
-            });
-            resolve();
-          }, 300);
-        })
       }
     }
   })};
@@ -393,25 +398,14 @@ var initBBBWeb = (function () {
     }
   }
 
-  async function loadSiteConf (serviceUrl, dataUrl) {
-    let siteconf = null;
-    try {
-      const r = await axios(serviceUrl + 'config.yaml');
-      siteconf = jsyaml.load(r.data);
-    } catch (err) {
-      const r = await axios(dataUrl + 'config.json');
-      siteconf = r.data;
-    }
-    return Object.assign(siteconf, { serviceUrl, dataUrl })
-  }
-
   /* global Vue, VueRouter */
 
   async function init (mountpoint, serviceUrl, dataUrl) {
     const reqs = await Promise.all([
       axios(serviceUrl + 'routes.json'),
-      loadSiteConf(serviceUrl, dataUrl)
+      loadSiteConf(serviceUrl, dataUrl),
     ]);
+    const user = initUser();
     const siteconf = reqs[1];
     const pageCreator$1 = pageCreator(dataUrl, siteconf);
     const detailPageCreator$1 = detailPageCreator(dataUrl, siteconf);
@@ -429,7 +423,7 @@ var initBBBWeb = (function () {
       mode: 'history',
       routes: webRoutes
     });
-    const store = Store(siteconf);
+    const store = Store(siteconf, await user);
 
     new Vue({
       router,

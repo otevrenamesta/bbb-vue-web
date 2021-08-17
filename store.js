@@ -1,13 +1,8 @@
-/* global Vue, Vuex, localStorage, LOGGED_USER, axios, _ */
-const loadedUsers = {}
+import { initUser } from './utils.js'
 
-Vue.filter('username', function (uid) {
-  return loadedUsers[uid] || 'unknown'
-})
-
-export default (siteconf) => { return new Vuex.Store({
+export default (siteconf, user) => { return new Vuex.Store({
   state: {
-    user: null,
+    user,
     site: siteconf
   },
   getters: {
@@ -19,18 +14,10 @@ export default (siteconf) => { return new Vuex.Store({
             ? media : `${siteconf.cdn}/${media}`
       if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) return murl
       return `${siteconf.cdn}/api/resize/?url=${encodeURIComponent(murl)}&${params}`
+    },
+    userLogged: state => {
+      return state.user !== null
     }
-    // userLogged: state => {
-    //   return state.user !== null
-    // },
-    // UID: state => (state.user.id),
-    // isMember: state => group => {
-    //   try {
-    //     return LOGGED_USER.groups.indexOf(group) >= 0
-    //   } catch (_) {
-    //     return false
-    //   }
-    // }
   },
   mutations: {
     profile: (state, profile) => {
@@ -40,18 +27,6 @@ export default (siteconf) => { return new Vuex.Store({
   actions: {
     toast: function (ctx, opts) {
       Vue.$toast.open(opts)
-    },
-    loadusers: function (ctx, opts) {
-      const toBeLoaded = _.filter(opts, i => !(i in loadedUsers))
-      return new Promise(resolve => {
-        toBeLoaded.length === 0 ? resolve() : setTimeout(() => {
-          console.log(`loaded: ${JSON.stringify(toBeLoaded)}`)
-          _.each(toBeLoaded, uid => {
-            loadedUsers[uid] = 'jssjfls' + uid
-          })
-          resolve()
-        }, 300)
-      })
     }
   }
 })}

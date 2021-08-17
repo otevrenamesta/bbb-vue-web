@@ -3,13 +3,14 @@ import './vuecustoms.js'
 import Store from './store.js'
 import PageCreator from './components/page.js'
 import DetailPageCreator from './components/detailPage.js'
-import { loadSiteConf } from './utils.js'
+import { loadSiteConf, initUser } from './utils.js'
 
 export default async function init (mountpoint, serviceUrl, dataUrl) {
   const reqs = await Promise.all([
     axios(serviceUrl + 'routes.json'),
-    loadSiteConf(serviceUrl, dataUrl)
+    loadSiteConf(serviceUrl, dataUrl),
   ])
+  const user = initUser()
   const siteconf = reqs[1]
   const pageCreator = PageCreator(dataUrl, siteconf)
   const detailPageCreator = DetailPageCreator(dataUrl, siteconf)
@@ -27,7 +28,7 @@ export default async function init (mountpoint, serviceUrl, dataUrl) {
     mode: 'history',
     routes: webRoutes
   })
-  const store = Store(siteconf)
+  const store = Store(siteconf, await user)
 
   new Vue({
     router,
