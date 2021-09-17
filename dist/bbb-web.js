@@ -240,7 +240,7 @@ var initBBBWeb = (function () {
             : media.match(/^https?:\/\//)
               ? media : `${siteconf.cdn}/${media}`;
         if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) return murl
-        return `${siteconf.cdn}/api/resize/?url=${encodeURIComponent(murl)}&${params}`
+        return `${siteconf.cdnapi}resize/?url=${encodeURIComponent(murl)}&${params}`
       },
       userLogged: state => {
         return state.user !== null
