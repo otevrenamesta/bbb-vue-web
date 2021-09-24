@@ -17,7 +17,7 @@ export function initUser () {
   let user = localStorage.getItem(KEY)
   user = user ? JSON.parse(user) : null
   if (user) return user
-  return axios('/nia/profile')
+  return axios('/api/nia/profile')
     .then(res => {
       saveUser(res.data)
       return res.data

@@ -195,68 +195,43 @@ var initBBBWeb = (function () {
 
   Vue.component('composition', composition);
 
-  async function loadSiteConf (serviceUrl, dataUrl) {
-    let siteconf = null;
-    try {
-      const r = await axios(serviceUrl + 'config.yaml');
-      siteconf = jsyaml.load(r.data);
-    } catch (err) {
-      const r = await axios(dataUrl + 'config.json');
-      siteconf = r.data;
-    }
-    return Object.assign(siteconf, { serviceUrl, dataUrl })
-  }
+  const isVector = (url) => url.match(/.*.svg$/);
 
-  const KEY = '_BBB_web_user';
-
-  function initUser () {
-    let user = localStorage.getItem(KEY);
-    user = user ? JSON.parse(user) : null;
-    if (user) return user
-    return axios('/nia/profile')
-      .then(res => {
-        saveUser(res.data);
-        return res.data
-      })
-      .catch(err => {
-        return null
-      })
-  }
-
-  function saveUser (user) {
-    localStorage.setItem(KEY, JSON.stringify(user));
-  }
-
-  var Store = (siteconf, user) => { return new Vuex.Store({
-    state: {
-      user,
-      site: siteconf
-    },
-    getters: {
-      mediaUrl: (state) => (media, params) => {
-        const isVector = (url) => url.match(/.*.svg$/);
-        const murl = _.isObject(media)
-            ? `${siteconf.cdn}/${media.id}/${media.filename}`
-            : media.match(/^https?:\/\//)
-              ? media : `${siteconf.cdn}/${media}`;
-        if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) return murl
-        return `${siteconf.cdnapi}resize/?url=${encodeURIComponent(murl)}&${params}`
+  var Store = (siteconf, user) => { 
+    return new Vuex.Store({
+      state: {
+        user,
+        site: siteconf
       },
-      userLogged: state => {
-        return state.user !== null
-      }
-    },
-    mutations: {
-      profile: (state, profile) => {
-        state.user = profile;
-      }
-    },
-    actions: {
-      toast: function (ctx, opts) {
-        Vue.$toast.open(opts);
-      }
-    }
-  })};
+      getters: {
+        mediaUrl: (state) => (media, params) => {
+          const murl = _.isObject(media)
+              ? `${siteconf.cdn}/${media.id}/${media.filename}`
+              : media.match(/^https?:\/\//)
+                ? media 
+                : `${siteconf.cdn}/${media}`;
+          if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) {
+            // je to vektor, nebo nechci modifier
+            return murl
+          }
+          return `${siteconf.cdnapi}/resize/?url=${encodeURIComponent(murl)}&${params}`
+        },
+        userLogged: state => {
+          return state.user !== null
+        }
+      },
+      mutations: {
+        profile: (state, profile) => {
+          state.user = profile;
+        }
+      },
+      // actions: {
+      //   toast: function (ctx, opts) {
+      //     Vue.$toast.open(opts)
+      //   }
+      // }
+    })
+  };
 
   const ALREADY_REGISTERED = ['composition', 'MDText', 'sitemap'];
   const _loaded = {};
@@ -396,6 +371,38 @@ var initBBBWeb = (function () {
         template: templateReq.data
       }
     }
+  }
+
+  async function loadSiteConf (serviceUrl, dataUrl) {
+    let siteconf = null;
+    try {
+      const r = await axios(serviceUrl + 'config.yaml');
+      siteconf = jsyaml.load(r.data);
+    } catch (err) {
+      const r = await axios(dataUrl + 'config.json');
+      siteconf = r.data;
+    }
+    return Object.assign(siteconf, { serviceUrl, dataUrl })
+  }
+
+  const KEY = '_BBB_web_user';
+
+  function initUser () {
+    let user = localStorage.getItem(KEY);
+    user = user ? JSON.parse(user) : null;
+    if (user) return user
+    return axios('/api/nia/profile')
+      .then(res => {
+        saveUser(res.data);
+        return res.data
+      })
+      .catch(err => {
+        return null
+      })
+  }
+
+  function saveUser (user) {
+    localStorage.setItem(KEY, JSON.stringify(user));
   }
 
   /* global Vue, VueRouter */
