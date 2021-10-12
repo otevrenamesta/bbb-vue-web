@@ -48,7 +48,11 @@ Kazdy ma:
 __V repositari nejsou zadne assety.__
 Ty jsou v udrzitelnem reseni hostovany mimo (CDN) a web na ne pouze odkazuje.
 
-## [Backendova cast ZDE](https://github.com/otevrenamesta/bbb-cms-api)
+## [Backend](https://github.com/otevrenamesta/bbb-cms-api)
+
+Backend je volitelna soucast, Web ho nutne nepotrebuje.
+Je potreba jako nastroj pro editaci, nebo pro automaticke pregenerovavani generovanych soucasti (napr. stylu).
+Vice v repozitari.
 
 ## Development
 
