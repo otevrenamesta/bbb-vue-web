@@ -1,3 +1,4 @@
+import { loadScript, loadStyle } from './script_service.js'
 const isVector = (url) => url.match(/.*.svg$/)
 
 export default (siteconf, user) => { 
@@ -8,11 +9,7 @@ export default (siteconf, user) => {
     },
     getters: {
       mediaUrl: (state) => (media, params) => {
-        const murl = _.isObject(media)
-            ? `${siteconf.cdn}/${media.id}/${media.filename}`
-            : media.match(/^https?:\/\//)
-              ? media 
-              : `${siteconf.cdn}/${media}`
+        const murl = media.match(/^https?:\/\//) ? media : `${siteconf.cdn}/${media}`
         if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) {
           // je to vektor, nebo nechci modifier
           return murl
@@ -28,10 +25,16 @@ export default (siteconf, user) => {
         state.user = profile
       }
     },
-    // actions: {
-    //   toast: function (ctx, opts) {
-    //     Vue.$toast.open(opts)
-    //   }
-    // }
+    actions: {
+      // toast: function (ctx, opts) {
+      //   Vue.$toast.open(opts)
+      // },
+      loadScript: function (ctx, src) {
+        return loadScript(src)
+      },
+      loadStyle: function (ctx, src) {
+        return loadStyle(src)
+      }
+    }
   })
 }
