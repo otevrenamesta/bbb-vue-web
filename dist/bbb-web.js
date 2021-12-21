@@ -59,7 +59,7 @@ var initBBBWeb = (function () {
       // don't handle same page links/anchors
       const url = new URL(target.href);
       const to = url.pathname;
-      if (to.match(/^https?:\/\//) || to.match(/^\/cdn\//)) {
+      if (to.match(/^https?:\/\//) || to.match(/^\/media\//)) {
         setTimeout(() => window.open(to, '_blank'), 500);
         return 
       }
@@ -195,6 +195,61 @@ var initBBBWeb = (function () {
 
   Vue.component('composition', composition);
 
+  const loaded = {};
+
+  function loadStyle (src) {
+    return new Promise((resolve, reject) => {
+      var fileref = document.createElement("link");
+      fileref.rel = "stylesheet";
+      fileref.type = 'text/css';
+      fileref.href = src;
+      if (fileref.readyState) {  //IE
+        fileref.onreadystatechange = () => {
+          if (fileref.readyState === "loaded" || fileref.readyState === "complete") {
+            fileref.onreadystatechange = null;
+            loaded[src] = { loaded: true, status: 'Loaded' };
+            resolve(loaded[src]);
+          }
+        };
+      } else {  //Others
+        fileref.onload = () => {
+          loaded[src] = { loaded: true, status: 'Loaded' };
+          resolve(loaded[src]);
+        };
+      }
+      document.getElementsByTagName("head")[0].appendChild(fileref);
+    })
+  }
+
+  function loadScript (src) {
+    return new Promise((resolve, reject) => {
+      if (loaded[src]) {
+        return resolve({ loaded: true, status: 'Already Loaded'} )
+      }
+      
+      let script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = src;
+      if (script.readyState) {  //IE
+        script.onreadystatechange = () => {
+          if (script.readyState === "loaded" || script.readyState === "complete") {
+            script.onreadystatechange = null;
+            loaded[src] = { loaded: true, status: 'Loaded' };
+            resolve(loaded[src]);
+          }
+        };
+      } else {  //Others
+        script.onload = () => {
+          loaded[src] = { loaded: true, status: 'Loaded' };
+          resolve(loaded[src]);
+        };
+      }
+      script.onerror = (error) => resolve({loaded: false, status: error });
+        
+      document.getElementsByTagName('head')[0].appendChild(script);
+    })
+  }
+
   const isVector = (url) => url.match(/.*.svg$/);
 
   var Store = (siteconf, user) => { 
@@ -205,11 +260,7 @@ var initBBBWeb = (function () {
       },
       getters: {
         mediaUrl: (state) => (media, params) => {
-          const murl = _.isObject(media)
-              ? `${siteconf.cdn}/${media.id}/${media.filename}`
-              : media.match(/^https?:\/\//)
-                ? media 
-                : `${siteconf.cdn}/${media}`;
+          const murl = media.match(/^https?:\/\//) ? media : `${siteconf.cdn}/${media}`;
           if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) {
             // je to vektor, nebo nechci modifier
             return murl
@@ -225,11 +276,17 @@ var initBBBWeb = (function () {
           state.user = profile;
         }
       },
-      // actions: {
-      //   toast: function (ctx, opts) {
-      //     Vue.$toast.open(opts)
-      //   }
-      // }
+      actions: {
+        // toast: function (ctx, opts) {
+        //   Vue.$toast.open(opts)
+        // },
+        loadScript: function (ctx, src) {
+          return loadScript(src)
+        },
+        loadStyle: function (ctx, src) {
+          return loadStyle(src)
+        }
+      }
     })
   };
 
