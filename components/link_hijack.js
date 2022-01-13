@@ -22,7 +22,7 @@ export default function (event) {
     // don't handle same page links/anchors
     const url = new URL(target.href)
     const to = url.pathname
-    if (to.match(/^https?:\/\//) || to.match(/^\/cdn\//)) {
+    if (to.match(/^https?:\/\//) || to.match(/^\/media\//)) {
       setTimeout(() => window.open(to, '_blank'), 500)
       return 
     }
