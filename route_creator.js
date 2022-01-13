@@ -15,7 +15,7 @@ export default function createRoutes (routeList, siteconf) {
   const webRoutes = _.map(routeList, i => {
     return { 
       path: i.path, 
-      component: () => i.path.indexOf(':') === -1 ? pageCreator(i.data) : detailPageCreator(i)
+      component: () => pageCreator(i.data)
     }
   })
   _.map(siteconf.detailpages, i => {
