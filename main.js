@@ -1,32 +1,19 @@
-/* global Vue, VueRouter */
 import './vuecustoms.js'
 import Store from './store.js'
-import PageCreator from './components/page.js'
-import DetailPageCreator from './components/detailPage.js'
 import { loadSiteConf, initUser } from './utils.js'
+import createRoutes from './route_creator.js'
 
 export default async function init (mountpoint, serviceUrl, dataUrl) {
   const reqs = await Promise.all([
     axios(serviceUrl + 'routes.json'),
-    loadSiteConf(serviceUrl, dataUrl),
+    loadSiteConf(serviceUrl, dataUrl)
   ])
-  const user = initUser()
-  const siteconf = reqs[1]
-  const pageCreator = PageCreator(dataUrl, siteconf)
-  const detailPageCreator = DetailPageCreator(dataUrl, siteconf)
-  const webRoutes = _.map(reqs[0].data, i => {
-    return { path: i.path, component: () => pageCreator(i.data) }
-  })
-  _.map(siteconf.detailpages, i => {
-    const route = i.component
-      ? { path: i.path, component: () => import(i.component) }
-      : { path: `${i.path}:id`, component: () => detailPageCreator(i) }
-    webRoutes.push(route)
-  })
+  const siteconf = Object.assign(reqs[1], { dataUrl })
+  const user = initUser(siteconf.profileURL)
   
   const router = new VueRouter({
     mode: 'history',
-    routes: webRoutes
+    routes: createRoutes(reqs[0].data, siteconf)
   })
   const store = Store(siteconf, await user)
 

@@ -12,10 +12,10 @@ function findComponents(data, components) {
   }, components)   
 }
 
-export default function pageCreator (dataUrl, siteconf) {
+export default function pageCreator (siteconf) {
   function loadComponent(name) {
     if (_loaded[name]) return _loaded[name]
-    const url = dataUrl + '_service/components/' + name + '.js'
+    const url = siteconf.dataUrl + '_service/components/' + name + '.js'
     _loaded[name] = import(url)
     return _loaded[name]
   }
@@ -27,9 +27,9 @@ export default function pageCreator (dataUrl, siteconf) {
   })
 
   return async function (path) {
-    const dataReq = await axios.get(dataUrl + path)
+    const dataReq = await axios.get(siteconf.dataUrl + path)
     const data = jsyaml.load(dataReq.data)
-    const url = dataUrl + '_service/layouts/' + data.layout + '.html'
+    const url = siteconf.dataUrl + '_service/layouts/' + data.layout + '.html'
     const templateReq = await axios.get(url)
     const components = findComponents(data, [])
 

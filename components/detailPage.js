@@ -11,10 +11,10 @@ function findComponents(data, components) {
   }, components)
 }
 
-export default function detailPageCreator (dataUrl, siteconf) {
+export default function detailPageCreator (siteconf) {
   function loadComponent(name) {
     if (_loaded[name]) return _loaded[name]
-    const url = dataUrl + '_service/components/' + name + '.js'
+    const url = siteconf.dataUrl + '_service/components/' + name + '.js'
     _loaded[name] = import(url)
     return _loaded[name]
   }
@@ -25,8 +25,15 @@ export default function detailPageCreator (dataUrl, siteconf) {
     Vue.component(i, () => loadComponent(i))
   })
 
+  async function _loadPage(path, siteconf) {
+    const dataReq = await axios.get(siteconf.dataUrl + path)
+    const data = jsyaml.load(dataReq.data)
+    return data
+  }
+
   return async function (config) {
-    const templateUrl = dataUrl + '_service/layouts/' + config.layout + '.html'
+    config = config.layout ? config : await _loadPage(config.data, siteconf)
+    const templateUrl = siteconf.dataUrl + '_service/layouts/' + config.layout + '.html'
     
     const templateReq = await axios.get(templateUrl)
     const components = findComponents(config, [])
@@ -37,11 +44,11 @@ export default function detailPageCreator (dataUrl, siteconf) {
     })
 
     return {
-      data: () => ({ item: null, config, loading: true }),
+      data: () => ({ item: null, config, data: config, loading: true }),
       created: async function () {
         const id = this.$router.currentRoute.params.id
-        const dataurl = config.url.replace('{{ID}}', id)
-        this.$data.item = (await axios.get(dataurl)).data[0]
+        const url = config.url.replace('{{ID}}', id)
+        this.$data.item = (await axios.get(url)).data[0]
         this.$data.loading = false
       },
       computed: {
