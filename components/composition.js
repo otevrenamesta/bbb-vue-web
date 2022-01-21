@@ -1,5 +1,3 @@
-/* global axios, _ */
-
 // const outer = {
 //   props: ['class'],
 //   template: '<div :class="class">{{slot}}</div>'

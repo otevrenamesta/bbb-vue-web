@@ -1,53 +1,14 @@
 
-const ALREADY_REGISTERED = ['composition', 'MDText', 'sitemap']
-const _loaded = {}
-
-function findComponents(data, components) {
-  return _.reduce(data.children, (acc, i) => {
-    if (! _.contains(ALREADY_REGISTERED, i.component)) acc.push(i.component)
-    if (i.component === 'composition') {
-      return _.union(findComponents(i, acc), acc)
-    }
-    return acc
-  }, components)   
-}
-
-export default function pageCreator (siteconf) {
-  function loadComponent(name) {
-    if (_loaded[name]) return _loaded[name]
-    const url = siteconf.dataUrl + '_service/components/' + name + '.js'
-    _loaded[name] = import(url)
-    return _loaded[name]
-  }
-  // load header and footer
-  Vue.component('pageHeader', () => loadComponent('header'))
-  Vue.component('pageFooter', () => loadComponent('footer'))
-  _.map(siteconf.globalComponents, i => {
-    Vue.component(i, () => loadComponent(i))
-  })
+export default function pageCreator (siteconf, templateManager, componentManager) {
 
   return async function (path) {
     const dataReq = await axios.get(siteconf.dataUrl + path)
     const data = jsyaml.load(dataReq.data)
-    const url = siteconf.dataUrl + '_service/layouts/' + data.layout + '.html'
-    const templateReq = await axios.get(url)
-    const components = findComponents(data, [])
-
-    // zatim global registrace
-    components.map(name => {
-      Vue.component(name, () => loadComponent(name))
-    })
+    data.children = componentManager.prepareComponents(data.children)
+    const template = await templateManager.get(data.layout)
 
     return {
       data: () => ({ data, path: null }),
-      created: function () {
-        this.$data.path = this.$router.currentRoute.path
-      },
-      computed: {
-        components: function () {
-          return _.filter(this.$data.data.children, i => (!i.disabled))
-        }
-      },
       metaInfo () {
         return {
           htmlAttrs: {
@@ -63,7 +24,7 @@ export default function pageCreator (siteconf) {
           ]
         }
       },
-      template: templateReq.data
+      template
     }
   }
 }

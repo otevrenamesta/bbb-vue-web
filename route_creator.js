@@ -1,16 +1,12 @@
 import PageCreator from './components/page.js'
 import DetailPageCreator from './components/detailPage.js'
+import TemplateManager from './template_manager.js'
+import AppPageCreator from './app_page.js'
 
-export default function createRoutes (routeList, siteconf) {
-  const pageCreator = PageCreator(siteconf)
-  const detailPageCreator = DetailPageCreator(siteconf)
-  
-  function _importComponent(component) {
-    const url = component.match(/http*./) 
-      ? component 
-      : `${siteconf.dataUrl}_service/${component}`
-    return import(url)
-  }
+export default async function createRoutes (routeList, siteconf, componentManager) {
+  const templateManager = TemplateManager(siteconf)
+  const pageCreator = PageCreator(siteconf, templateManager, componentManager)
+  const detailPageCreator = DetailPageCreator(siteconf, templateManager, componentManager)
   
   const webRoutes = _.map(routeList, i => {
     return { 
@@ -20,9 +16,17 @@ export default function createRoutes (routeList, siteconf) {
   })
   _.map(siteconf.detailpages, i => {
     const route = i.component
-      ? { path: i.path, component: () => _importComponent(i.component) }
+      ? { path: i.path, component: () => componentManager.load(i.component) }
       : { path: `${i.path}:id`, component: () => detailPageCreator(i) }
     webRoutes.push(route)
   })
+
+  const createAppPage = AppPageCreator(siteconf, templateManager, componentManager)
+  const promises = _.map(siteconf.apps, async i => {
+    const mod = await componentManager.load(i.module)
+    mod.setup(webRoutes, i.path, i, createAppPage)
+  })
+  await Promise.all(promises)
+
   return webRoutes
 }

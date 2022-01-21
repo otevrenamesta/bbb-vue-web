@@ -5,6 +5,7 @@ export async function loadSiteConf (serviceUrl, dataUrl) {
     const r = await axios(serviceUrl + 'config.yaml')
     siteconf = jsyaml.load(r.data)
   } catch (err) {
+    if (err.name === "YAMLException") return alert(err.message)
     const r = await axios(dataUrl + 'config.json')
     siteconf = r.data
   }

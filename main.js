@@ -2,6 +2,7 @@ import './vuecustoms.js'
 import Store from './store.js'
 import { loadSiteConf, initUser } from './utils.js'
 import createRoutes from './route_creator.js'
+import ComponentManager from './component_manager.js'
 
 export default async function init (mountpoint, serviceUrl, dataUrl) {
   const reqs = await Promise.all([
@@ -9,11 +10,12 @@ export default async function init (mountpoint, serviceUrl, dataUrl) {
     loadSiteConf(serviceUrl, dataUrl)
   ])
   const siteconf = Object.assign(reqs[1], { dataUrl })
+  const componentManager = ComponentManager(siteconf)
   const user = initUser(siteconf.profileURL)
   
   const router = new VueRouter({
     mode: 'history',
-    routes: createRoutes(reqs[0].data, siteconf)
+    routes: await createRoutes(reqs[0].data, siteconf, componentManager)
   })
   const store = Store(siteconf, await user)
 
@@ -26,7 +28,17 @@ export default async function init (mountpoint, serviceUrl, dataUrl) {
       // all titles will be injected into this template
       titleTemplate: `%s | ${siteconf.title}`
     },
-    template: `<router-view :key="$route.fullPath" />`
+    components: {
+      SiteHeader: () => componentManager.load('header'),
+      SiteFooter: () => componentManager.load('footer')
+    },
+    template: `
+    <div>
+      <SiteHeader />
+      <router-view :key="$route.fullPath" />
+      <SiteFooter />
+    </div>
+    `
   }).$mount(mountpoint)
 }
 
