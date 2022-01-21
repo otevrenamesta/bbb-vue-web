@@ -1,9 +1,10 @@
-export default (siteconf, templateManager) => function _create (component, cfg) {
+export default (siteconf, templateManager, componentManager) => function _create (component, cfg) {
   return async function () {
     const template = await templateManager.get(cfg.layout)
-    const data = Object.assign({}, cfg, { children: [ 
+    const children = componentManager.prepareComponents(cfg.children || [])
+    const data = Object.assign({}, cfg, { children: _.union(children, [ 
       Object.assign({}, cfg, { component })
-    ]})
+    ])})
 
     return {
       data: () => ({ data }),
