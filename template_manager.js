@@ -3,22 +3,23 @@ export default (siteconf) => {
   const _buf = {}
   const _promises = {}
 
-  function _load (templatename) {
-    const templateUrl = siteconf.dataUrl + '_service/layouts/' + templatename + '.html'
-    _promises[templatename] = axios.get(templateUrl).then(res => {
-      _buf[templatename] = res.data
-      delete _promises[templatename]
+  function _load (url) {
+    _promises[url] = axios.get(url).then(res => {
+      _buf[url] = res.data
+      delete _promises[url]
       return res.data
     })
-    return _promises[templatename]
+    return _promises[url]
   }
 
   return {
-    get: function (templatename) {
-      if (templatename in _buf) return _buf[templatename]
-      return templatename in _promises
-        ? _promises[templatename]
-        : _load(templatename)
+    get: function (name, templatesUrl = null) {
+      const templateUrl = (templatesUrl || siteconf.templatesUrl)
+        + name + (name.match(/.*.html/) ? '' : '.html')
+      if (templateUrl in _buf) return _buf[templateUrl]
+      return templateUrl in _promises
+        ? _promises[templateUrl]
+        : _load(templateUrl)
     }
   }
 }

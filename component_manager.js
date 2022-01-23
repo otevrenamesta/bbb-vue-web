@@ -10,7 +10,7 @@ export default (siteconf) => {
 
   function _load (name) {
     const url = name.match(/http*./) ? name
-      : addJSSuffix(siteconf.dataUrl + '_service/components/' + name)
+      : addJSSuffix(siteconf.componentsUrl + name)
     _promises[name] = import(url).then(module => {
       _buf[name] = module
       delete _promises[name]

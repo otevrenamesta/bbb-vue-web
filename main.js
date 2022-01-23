@@ -4,12 +4,12 @@ import { loadSiteConf, initUser } from './utils.js'
 import createRoutes from './route_creator.js'
 import ComponentManager from './component_manager.js'
 
-export default async function init (mountpoint, serviceUrl, dataUrl) {
+export default async function init (mountpoint, config) {
   const reqs = await Promise.all([
-    axios(serviceUrl + 'routes.json'),
-    loadSiteConf(serviceUrl, dataUrl)
+    axios(config.serviceUrl + 'routes.json'),
+    loadSiteConf(config)
   ])
-  const siteconf = Object.assign(reqs[1], { dataUrl })
+  const siteconf = Object.assign(reqs[1], config)
   const componentManager = ComponentManager(siteconf)
   const user = initUser(siteconf.profileURL)
   
@@ -29,8 +29,8 @@ export default async function init (mountpoint, serviceUrl, dataUrl) {
       titleTemplate: `%s | ${siteconf.title}`
     },
     components: {
-      SiteHeader: () => componentManager.load('header'),
-      SiteFooter: () => componentManager.load('footer')
+      SiteHeader: () => componentManager.load('header.js'),
+      SiteFooter: () => componentManager.load('footer.js')
     },
     template: `
     <div>

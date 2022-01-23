@@ -1,15 +1,7 @@
 
-export async function loadSiteConf (serviceUrl, dataUrl) {
-  let siteconf = null
-  try {
-    const r = await axios(serviceUrl + 'config.yaml')
-    siteconf = jsyaml.load(r.data)
-  } catch (err) {
-    if (err.name === "YAMLException") return alert(err.message)
-    const r = await axios(dataUrl + 'config.json')
-    siteconf = r.data
-  }
-  return Object.assign(siteconf, { serviceUrl, dataUrl })
+export async function loadSiteConf (config) {
+  const r = await axios(config.serviceUrl + 'config.yaml')
+  return jsyaml.load(r.data)
 }
 
 const KEY = '_BBB_web_user'
