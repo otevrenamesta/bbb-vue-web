@@ -41,8 +41,8 @@ export default (siteconf) => {
   }
 
   // register global components
-  _.map(siteconf.globalComponents, async name => {
-    const Component = await load(name)
+  _.map(siteconf.globalComponents || {}, async (url, name) => {
+    const Component = await load(url)
     Vue.component(name, Component.default)
   })
 
