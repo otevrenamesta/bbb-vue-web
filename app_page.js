@@ -8,7 +8,7 @@ export default function (siteconf, templateManager, componentManager) {
     async function _createAppComponent () {
       const templates = {}
       await Promise.all(requiredTemplates.map(name => {
-        return templateManager.get(cfg.templates + name).then(t => {
+        return templateManager.get(name, cfg.templates).then(t => {
           templates[name] = t
         })
       }))
