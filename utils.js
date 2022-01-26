@@ -7,9 +7,9 @@ export async function loadSiteConf (config) {
 const KEY = '_BBB_web_user'
 
 export function initUser (profileURL) {
-  let user = localStorage.getItem(KEY)
-  user = user ? JSON.parse(user) : null
-  if (user) return user
+  // let user = localStorage.getItem(KEY)
+  // user = user ? JSON.parse(user) : null
+  // if (user) return user
   return axios(profileURL)
     .then(res => {
       saveUser(res.data)
