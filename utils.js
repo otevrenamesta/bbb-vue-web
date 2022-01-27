@@ -11,7 +11,7 @@ export function makeRequest (method, url, opts = {}) {
     method, 
     url, 
     data: opts.data || null, 
-    withCredentials: opts.withCredentials || false 
+    withCredentials: opts.withCredentials || method !== 'get' || false
   }).then(res => res.data)
 }
 
