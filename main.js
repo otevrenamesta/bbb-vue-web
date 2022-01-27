@@ -3,6 +3,8 @@ import Store from './store.js'
 import { loadSiteConf, initUser, makeRequest } from './utils.js'
 import createRoutes from './route_creator.js'
 import ComponentManager from './component_manager.js'
+import TemplateManager from './template_manager.js'
+import CookiesPromptFN from './components/cookiesPrompt.js'
 
 export default async function init (mountpoint, config) {
   const reqs = await Promise.all([
@@ -11,11 +13,12 @@ export default async function init (mountpoint, config) {
   ])
   const siteconf = Object.assign(reqs[1], config)
   const componentManager = ComponentManager(siteconf)
+  const templateManager = TemplateManager(siteconf)
   const user = initUser(siteconf.profileURL)
   
   const router = new VueRouter({
     mode: 'history',
-    routes: await createRoutes(reqs[0].data, siteconf, componentManager)
+    routes: await createRoutes(reqs[0].data, siteconf, componentManager, templateManager)
   })
   router.beforeEach((to, from, next) => {
     window.scrollTo(0, 0)
@@ -34,7 +37,8 @@ export default async function init (mountpoint, config) {
     },
     components: {
       SiteHeader: () => componentManager.load('header.js'),
-      SiteFooter: () => componentManager.load('footer.js')
+      SiteFooter: () => componentManager.load('footer.js'),
+      CookiesPrompt: CookiesPromptFN(templateManager)
     },
     methods: {
       request: makeRequest
@@ -42,6 +46,7 @@ export default async function init (mountpoint, config) {
     template: `
     <div>
       <SiteHeader />
+      <CookiesPrompt />
       <router-view :key="$route.fullPath" />
       <SiteFooter />
     </div>
