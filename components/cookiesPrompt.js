@@ -2,7 +2,10 @@ const KEY = 'euconsentid'
 const status = localStorage.getItem(KEY) || null
 
 export default (templateManager) => async () => {
-  const t = await templateManager.get('cookies.html')
+  let template = null
+  try {
+    template = await templateManager.get('cookies.html')
+  } catch (_) {}
   return {
     data: function () {
       return { status }
