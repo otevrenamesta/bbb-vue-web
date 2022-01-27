@@ -21,12 +21,13 @@ export default {
   created: async function () {
     try {
       const reqs = await Promise.all([
-        axios.get(`${this.$store.state.site.serviceUrl}routes.json`),
-        axios.get(`${this.$store.state.site.serviceUrl}metainfo.json`)
+        this.$root.request('get', `${this.$store.state.site.serviceUrl}routes.json`),
+        this.$root.request('get', `${this.$store.state.site.serviceUrl}metainfo.json`)
       ])
-      this.$data.tree = _buildTree(reqs[0].data, reqs[1].data)
+      this.$data.tree = _buildTree(reqs[0], reqs[1])
       this.$data.loading = false
-    } catch (_) {
+    } catch (err) {
+      this.tree = err
     }
     Vue.component('sitemapPageList', pageList)
   },
@@ -45,7 +46,7 @@ function _buildTree(pages, metas) {
       _insert2Tree(node, existing.children, _.rest(path))
     } else {
       const meta = metas[node.data]
-      subtree.push({
+      meta && subtree.push({
         id: node.path,
         title: meta.title,
         desc: meta.desc,
