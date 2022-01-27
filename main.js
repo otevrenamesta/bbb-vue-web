@@ -1,6 +1,6 @@
 import './vuecustoms.js'
 import Store from './store.js'
-import { loadSiteConf, initUser } from './utils.js'
+import { loadSiteConf, initUser, makeRequest } from './utils.js'
 import createRoutes from './route_creator.js'
 import ComponentManager from './component_manager.js'
 
@@ -17,6 +17,10 @@ export default async function init (mountpoint, config) {
     mode: 'history',
     routes: await createRoutes(reqs[0].data, siteconf, componentManager)
   })
+  router.beforeEach((to, from, next) => {
+    window.scrollTo(0, 0)
+    next()
+  })
   const store = Store(siteconf, await user)
 
   new Vue({
@@ -31,6 +35,9 @@ export default async function init (mountpoint, config) {
     components: {
       SiteHeader: () => componentManager.load('header.js'),
       SiteFooter: () => componentManager.load('footer.js')
+    },
+    methods: {
+      request: makeRequest
     },
     template: `
     <div>
