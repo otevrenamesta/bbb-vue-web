@@ -20,7 +20,7 @@ export default (templateManager) => async () => {
         this.status = false
       }
     },
-    template: t || defaultTemplate
+    template: template || defaultTemplate
   }
 }
 const defaultTemplate = `
