@@ -16,7 +16,7 @@ export default (siteconf) => {
     get: function (name, templatesUrl = null) {
       const templateUrl = (templatesUrl || siteconf.templatesUrl)
         + name + (name.match(/.*.html/) ? '' : '.html')
-      if (templateUrl in _buf) return _buf[templateUrl]
+      if (templateUrl in _buf) return new Promise(resolve => resolve(_buf[templateUrl]))
       return templateUrl in _promises
         ? _promises[templateUrl]
         : _load(templateUrl)

@@ -20,7 +20,7 @@ export default (siteconf) => {
   }
 
   function load (url) {
-    if (url in _buf) return _buf[url]
+    if (url in _buf) return new Promise(resolve => resolve(_buf[url]))
     return url in _promises ? _promises[url] : _load(url)
   }
 
