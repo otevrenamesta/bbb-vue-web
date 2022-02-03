@@ -27,6 +27,7 @@ export default async function init (mountpoint, config) {
   const store = Store(siteconf, await user)
 
   new Vue({
+    data: siteconf,
     router,
     store,
     metaInfo: {
