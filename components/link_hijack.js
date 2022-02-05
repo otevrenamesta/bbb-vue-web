@@ -4,6 +4,10 @@ export default function (event) {
   let { target } = event
   while (target && target.tagName !== 'A') target = target.parentNode
   // handle only links that occur inside the component and do not reference external resources
+  if (target.href && target.getAttribute('l') === 'local') {
+    event.preventDefault()
+    return this.$router.push(target.getAttribute('href'))
+  }
   if (target && target.matches(".MDText a:not([href*='://'])") && target.href) {
     // some sanity checks taken from vue-router:
     // https://github.com/vuejs/vue-router/blob/dev/src/components/link.js#L106
