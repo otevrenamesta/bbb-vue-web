@@ -1,65 +1,88 @@
-const pageList = {
-  props: ['pages'],
+const FolderList = {
+  props: ['data', 'onColapse'],
   template: `
-  <ul class="sitemaplist">
-    <li v-for="i, idx in pages" :key="idx">
-      <router-link :to="i.id"><h5>{{ i.title }}</h5></router-link>
-      <span>{{ i.desc }}</span>
-      <sitemapPageList v-if="i.children" :pages="i.children" />
-    </li>
-  </ul>
+  <div v-if="data.type === 'directory'" class="folder">
+    <i class="fas" :class="data.loaded ? 'fa-minus' : 'fa-plus'" 
+      @click="onColapse(data)"></i> <router-link :to="data.path">
+      {{ data.title }}
+    </router-link>: <span>{{ data.desc }}</span><i v-if="data.loading" class="fas fa-spinner fa-spin"></i>
+    <ul style="margin-left: 2em;" v-if="data.loaded">
+      <li v-for="i, idx in data.children" :key="idx">
+        <FolderList :data="i" :onColapse="onColapse" />
+      </li>
+    </ul>
+  </div>
+  <div v-else>
+    <router-link :to="data.path">{{ data.title }}</router-link>: <span>{{ data.desc }}</span>
+  </div>
   `
 }
+
+const omitedFOlders = ['index.yaml', '_service']
+Vue.component('FolderList', FolderList)
 
 export default {
   data: function () {
     return {
-      tree: null,
-      loading: true
+      tree: this._createItem('/', 'directory')
     }
   },
   created: async function () {
-    try {
-      const reqs = await Promise.all([
-        this.$root.request('get', `${this.$store.state.site.serviceUrl}routes.json`),
-        this.$root.request('get', `${this.$store.state.site.serviceUrl}metainfo.json`)
-      ])
-      this.$data.tree = _buildTree(reqs[0], reqs[1])
-      this.$data.loading = false
-    } catch (err) {
-      this.tree = err
-    }
-    Vue.component('sitemapPageList', pageList)
+    this.loadInfo(this.tree)
   },
   props: ['data'],
-  template: `
-  <i v-if="loading" class="fas fa-spinner fa-spin"></i>
-  <sitemapPageList v-else :pages="tree" />
-  `
-}
-
-function _buildTree(pages, metas) {
-  function _insert2Tree (node, subtree, path) {
-    const existing = _.find(subtree, i => i.foldername === path[0])
-    if (existing && path.length > 1) {
-      existing.children = existing.children || []
-      _insert2Tree(node, existing.children, _.rest(path))
-    } else {
-      const meta = metas[node.data]
-      meta && subtree.push({
-        id: node.path,
-        title: meta.title,
-        desc: meta.desc,
-        foldername: path[0]
+  methods: {
+    _createItem: function (path, type) {
+      return {
+        loading: false,
+        loaded: false,
+        title: '', desc: '',
+        path, type,
+        children: []
+      }
+    },
+    loadInfo: async function (folderInfo) {
+      try {
+        const filename = folderInfo.type === 'file' 
+          ? folderInfo.path + '.yaml'
+          : folderInfo.path + '/index.yaml'
+        const url = this.$root.dataUrl + filename
+        const info = await axios.get(url)
+        const data = jsyaml.load(info.data)
+        folderInfo.title = data.title
+        folderInfo.desc = data.desc
+      } catch (_) {
+        folderInfo.title = folderInfo.path
+      }      
+      folderInfo.loading = false
+    },
+    loadfolder: async function (folderInfo) {
+      folderInfo.loading = true
+      const promises = []
+      const contentReq = await axios.get(this.$root.dataUrl + folderInfo.path)
+      contentReq.data.map(i => {
+        const match = i.name.match(/^(\w+).yaml$/)
+        if (i.type !== 'directory' && match) {
+          const item = this._createItem(folderInfo.path + '/' + match[1], i.type)
+          folderInfo.children.push(item)
+          promises.push(this.loadInfo(item))
+        } else if (i.type === 'directory' && omitedFOlders.indexOf(i.name) < 0) {
+          const item = this._createItem(folderInfo.path + '/' + i.name, i.type)
+          folderInfo.children.push(item)
+          promises.push(this.loadInfo(item))
+        }
       })
+      await Promise.all(promises)
+      folderInfo.loaded = true
+      folderInfo.loading = false
+    },
+    unloadFolder: function (f) {
+      f.children.splice()
+      f.loaded = false
+    },
+    onColapse: async function (f) {
+      f.loaded ? this.unloadFolder(f) : this.loadfolder(f)
     }
-  }
-  const sorted = _.sortBy(pages, 'path')
-  const meta = metas['index.yaml']
-  const tree = [{ id: '/', title: meta.title, desc: meta.desc, foldername: '' }]
-  _.map(_.rest(sorted), i => {
-    const parts = i.path.split('/')
-    _insert2Tree(i, tree, parts)
-  })
-  return tree
+  },
+  template: `<FolderList v-if="tree.title" :data="tree" :onColapse="onColapse" />`
 }

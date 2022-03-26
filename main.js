@@ -7,18 +7,15 @@ import TemplateManager from './template_manager.js'
 import CookiesPromptFN from './components/cookiesPrompt.js'
 
 export default async function init (mountpoint, config) {
-  const reqs = await Promise.all([
-    axios(config.serviceUrl + 'routes.json'),
-    loadSiteConf(config)
-  ])
-  const siteconf = Object.assign(reqs[1], config)
+  const siteconf = await loadSiteConf(config)
+  Object.assign(siteconf, config)
   const componentManager = ComponentManager(siteconf)
   const templateManager = TemplateManager(siteconf)
   const user = initUser(siteconf.profileURL)
   
   const router = new VueRouter({
     mode: 'history',
-    routes: await createRoutes(reqs[0].data, siteconf, componentManager, templateManager)
+    routes: await createRoutes(siteconf, componentManager, templateManager)
   })
   router.beforeEach((to, from, next) => {
     window.scrollTo(0, 0)
