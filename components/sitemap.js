@@ -18,7 +18,6 @@ const FolderList = {
   `
 }
 
-const omitedFOlders = ['index.yaml', '_service']
 Vue.component('FolderList', FolderList)
 
 export default {
@@ -59,14 +58,14 @@ export default {
     loadfolder: async function (folderInfo) {
       folderInfo.loading = true
       const promises = []
-      const contentReq = await axios.get(this.$root.dataUrl + folderInfo.path)
+      const contentReq = await axios.get(this.$root.dataUrl + 'pages/' + folderInfo.path)
       contentReq.data.map(i => {
         const match = i.name.match(/^(\w+).yaml$/)
         if (i.type !== 'directory' && match) {
           const item = this._createItem(folderInfo.path + '/' + match[1], i.type)
           folderInfo.children.push(item)
           promises.push(this.loadInfo(item))
-        } else if (i.type === 'directory' && omitedFOlders.indexOf(i.name) < 0) {
+        } else if (i.type === 'directory') {
           const item = this._createItem(folderInfo.path + '/' + i.name, i.type)
           folderInfo.children.push(item)
           promises.push(this.loadInfo(item))
