@@ -6,16 +6,16 @@ async function _getYAMLRoutes (siteconf, pageCreator) {
   const routes = []
   async function _loadFolder (folder) {
     const promises = []
-    const contentReq = await axios.get(siteconf.dataUrl + folder)
+    const contentReq = await axios.get(siteconf.dataUrl + 'pages/' + folder)
     _.map(contentReq.data, i => {
       const match = i.name.match(/^(\w+).yaml$/)
-      if (i.type !== 'directory' && match) {
+      if (i.type === 'file' && match) {
         const path = folder + (i.name === 'index.yaml' ? '/' : match[1])
         routes.push({ 
           path: path.replace(/(\/){2,}/g, '/'), 
           component: () => pageCreator(folder + '/' + i.name)
         })
-      } else if (i.type === 'directory' && i.name !== '_service') {
+      } else if (i.type === 'directory') {
         promises.push(_loadFolder(`${folder}/${i.name}/`))
       }
     })

@@ -6,7 +6,6 @@ const bs = BS.create()
 const DEV_DIR = path.resolve(__dirname)
 const INDEX_DIR = path.resolve(__dirname + '/..')
 // const NODE_MODULES = path.resolve(path.join(__dirname, '../node_modules'))
-if (!process.env.DATA_FOLDER) throw new Error('process.env.DATA_FOLDER not set!!')
 
 // const middlewarez = []
 // try {
@@ -26,10 +25,10 @@ async function init () {
     single: true,
     open: false,
     ui: false,
-    serveStatic: [{
-      route: '/data',
-      dir: process.env.DATA_FOLDER
-    }],
+    // serveStatic: [{
+    //   route: '/data',
+    //   dir: process.env.DATA_FOLDER
+    // }],
     // middleware: middlewarez
   })
   bs.watch(DEV_DIR + '/index.html').on('change', bs.reload)

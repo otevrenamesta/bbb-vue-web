@@ -1,6 +1,6 @@
 
 export async function loadSiteConf (config) {
-  const r = await axios(config.serviceUrl + 'config.yaml')
+  const r = await axios(config.dataUrl + 'config.yaml')
   return jsyaml.load(r.data)
 }
 

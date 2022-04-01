@@ -2,7 +2,7 @@
 export default function pageCreator (siteconf, templateManager, componentManager) {
 
   return async function (path) {
-    const dataReq = await axios.get(siteconf.dataUrl + path)
+    const dataReq = await axios.get(siteconf.dataUrl + 'pages/' + path)
     const data = jsyaml.load(dataReq.data)
     data.children = componentManager.prepareComponents(data.children)
     const template = await templateManager.get(data.layout)
