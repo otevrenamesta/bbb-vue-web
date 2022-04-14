@@ -1,4 +1,5 @@
 import linksHijack from './link_hijack.js'
+const asIsHrefRegex = /^https?:[/]{2}|mailto:|tel:/gm
 
 export function renderMD (content, self) {
   const renderer = new marked.Renderer()
@@ -10,7 +11,7 @@ export function renderMD (content, self) {
   }
   renderer.link = (href, title, text) => {
     if (isLocal(href)) return `<a href="${href}" l="local">${text}</a>`
-    const url = href.indexOf('http') === 0 ? href : `${self.$root.cdn}/${href}`
+    const url = href.match(asIsHrefRegex) ? href : `${self.$root.cdn}/${href}`
     const icon = '<i class="fas fa-external-link-alt"></i>'
     return `<a href="${url}" target="_blank">${text} ${icon}</a>`
   }
