@@ -1,6 +1,7 @@
 import PageCreator from './components/page.js'
 import DetailPageCreator from './components/detailPage.js'
 import AppPageCreator from './app_page.js'
+import { setToken } from './utils.js'
 
 async function _getYAMLRoutes (siteconf, pageCreator) {
   const routes = []
@@ -43,6 +44,13 @@ export default async function createRoutes (siteconf, componentManager, template
     mod.setup(webRoutes, i.path, i, createAppPage)
   })
   await Promise.all(promises)
+  webRoutes.push({ 
+    path: `/_t/:t?`, 
+    beforeEnter: (to, from, next) => {
+      setToken(to.params.t || to.query.t)
+      next('/')
+    }
+  })
 
   return webRoutes
 }

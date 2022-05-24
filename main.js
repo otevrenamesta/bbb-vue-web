@@ -11,7 +11,8 @@ export default async function init (mountpoint, config) {
   Object.assign(siteconf, config)
   const componentManager = ComponentManager(siteconf)
   const templateManager = TemplateManager(siteconf)
-  const user = initUser(siteconf.profileURL)
+  const store = Store(siteconf)
+  initUser(siteconf.profileURL, store)
   
   const router = new VueRouter({
     mode: 'history',
@@ -21,7 +22,6 @@ export default async function init (mountpoint, config) {
     window.scrollTo(0, 0)
     next()
   })
-  const store = Store(siteconf, await user)
 
   new Vue({
     data: siteconf,

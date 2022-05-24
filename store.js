@@ -1,10 +1,10 @@
 import { loadScript, loadStyle } from './script_service.js'
 const isVector = (url) => url.match(/.*.svg$/)
 
-export default (siteconf, user) => { 
+export default (siteconf) => { 
   return new Vuex.Store({
     state: {
-      user,
+      user: null,
       site: siteconf
     },
     getters: {

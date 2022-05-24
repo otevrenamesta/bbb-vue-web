@@ -4,31 +4,36 @@ export async function loadSiteConf (config) {
   return jsyaml.load(r.data)
 }
 
-const KEY = '_BBB_web_user'
-
-export function makeRequest (method, url, opts = {}) {
-  return axios({ 
-    method, 
-    url, 
-    data: opts.data || null, 
-    withCredentials: opts.withCredentials || method !== 'get' || false
-  }).then(res => res.data)
+const KEY = window.location.hostname + '_BBB_token'
+let token = null
+let storeLink = null
+let gprofileURL = null
+export function setToken(newToken) {
+  localStorage.setItem(KEY, newToken)
+  token = newToken
+  initUser(gprofileURL)
 }
 
-export function initUser (profileURL) {
-  // let user = localStorage.getItem(KEY)
-  // user = user ? JSON.parse(user) : null
-  // if (user) return user
-  return makeRequest('get', profileURL, { withCredentials: true })
-    .catch(err => {
-      return null
-    })
+export function makeRequest(method, url, opts = {}) {
+  const cfg = { method }
+  opts.data && Object.assign(cfg, { body: JSON.stringify(opts.data) })
+  token && opts.withCredentials && Object.assign(cfg, { 
+    headers: { Authorization: `Bearer ${token}` } 
+  })
+  return fetch(url, cfg).then(res => res.json())
 }
 
-function removeUser () {
-  localStorage.removeItem(KEY)
-}
-
-export function saveUser (user) {
-  localStorage.setItem(KEY, JSON.stringify(user))
+export async function initUser (profileURL, store = null) {
+  if (store) {
+    storeLink = store
+    gprofileURL = profileURL
+  }
+  token = localStorage.getItem(KEY)
+  try {
+    const user = await makeRequest('get', gprofileURL, { withCredentials: true })
+    storeLink.commit('profile', user)
+  } catch (err) {
+    token = null
+    localStorage.removeItem(KEY)
+  }
 }
