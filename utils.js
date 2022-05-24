@@ -16,10 +16,12 @@ export function setToken(newToken) {
 
 export function makeRequest(method, url, opts = {}) {
   const cfg = { method }
-  opts.data && Object.assign(cfg, { body: JSON.stringify(opts.data) })
   token && opts.withCredentials && Object.assign(cfg, { 
     headers: { Authorization: `Bearer ${token}` } 
   })
+  opts.data 
+    && Object.assign(cfg, { body: JSON.stringify(opts.data) })
+    && Object.assign(cfg.headers, { 'Content-Type':'application/json' })
   return fetch(url, cfg).then(res => res.json())
 }
 
