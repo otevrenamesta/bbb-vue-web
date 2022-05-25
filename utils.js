@@ -63,8 +63,10 @@ export function getMethods(siteconf, store) {
     token = localStorage.getItem(KEY)
     try {
       const user = await makeRequest('get', siteconf.profileURL, { withCredentials: true })
-      store.commit('profile', user)
-      siteconf.user = user
+      if (user) {
+        store.commit('profile', user)
+        siteconf.user = user
+      }
     } catch (_) {}
   }
 
