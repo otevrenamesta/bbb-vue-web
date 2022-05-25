@@ -47,13 +47,14 @@ export function getMethods(siteconf, store) {
   
   async function logout () {
     const url = siteconf.api + '/nia/logout'
-    const r = await makeRequest('get', url, { withCredentials: true })
+    const logoutURL = await makeRequest('get', url, { withCredentials: true })
     doLogout()
-    window.location.href = r.data
+    window.location.href = logoutURL
   }
 
   function doLogout () {
     store.commit('profile', null)
+    siteconf.user = null
     token = null
     localStorage.removeItem(KEY)
   }
@@ -63,6 +64,7 @@ export function getMethods(siteconf, store) {
     try {
       const user = await makeRequest('get', siteconf.profileURL, { withCredentials: true })
       store.commit('profile', user)
+      siteconf.user = user
     } catch (_) {}
   }
 

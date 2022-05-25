@@ -8,7 +8,7 @@ import CookiesPromptFN from './components/cookiesPrompt.js'
 
 export default async function init (mountpoint, config) {
   const siteconf = await loadSiteConf(config)
-  Object.assign(siteconf, config)
+  Object.assign(siteconf, config, { user: null })
   const componentManager = ComponentManager(siteconf)
   const templateManager = TemplateManager(siteconf)
   const store = Store(siteconf)
@@ -26,6 +26,9 @@ export default async function init (mountpoint, config) {
 
   new Vue({
     data: siteconf,
+    computed: {
+      userLogged: function () { return siteconf.user !== null }
+    },
     router,
     store,
     metaInfo: {
