@@ -1,7 +1,6 @@
 import PageCreator from './components/page.js'
 import DetailPageCreator from './components/detailPage.js'
 import AppPageCreator from './app_page.js'
-import { setToken } from './utils.js'
 
 async function _getYAMLRoutes (siteconf, pageCreator) {
   const routes = []
@@ -26,7 +25,7 @@ async function _getYAMLRoutes (siteconf, pageCreator) {
   return routes
 }
 
-export default async function createRoutes (siteconf, componentManager, templateManager) {
+export default async function createRoutes (siteconf, componentManager, templateManager, methods) {
   const pageCreator = PageCreator(siteconf, templateManager, componentManager)
   const detailPageCreator = DetailPageCreator(siteconf, templateManager, componentManager)
   
@@ -47,7 +46,7 @@ export default async function createRoutes (siteconf, componentManager, template
   webRoutes.push({ 
     path: `/_t/:t?`, 
     beforeEnter: (to, from, next) => {
-      setToken(to.params.t || to.query.t)
+      methods.setToken(to.params.t || to.query.t)
       next('/')
     }
   })

@@ -1,5 +1,5 @@
 import { loadScript, loadStyle } from './script_service.js'
-const isVector = (url) => url.match(/.*.svg$/)
+import { mediaUrl } from './utils.js'
 
 export default (siteconf) => { 
   return new Vuex.Store({
@@ -8,14 +8,7 @@ export default (siteconf) => {
       site: siteconf
     },
     getters: {
-      mediaUrl: (state) => (media, params) => {
-        const murl = media.match(/^https?:\/\//) ? media : `${siteconf.cdn}/${media}`
-        if (isVector(murl) || (!params && !murl.match(/^https?:\/\//))) {
-          // je to vektor, nebo nechci modifier
-          return murl
-        }
-        return `${siteconf.cdnapi}/resize/?url=${encodeURIComponent(murl)}&${params}`
-      },
+      mediaUrl: (state) => (media, params) => mediaUrl(siteconf, media, params),
       userLogged: state => {
         return state.user !== null
       }

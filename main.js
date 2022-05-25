@@ -1,6 +1,6 @@
 import './vuecustoms.js'
 import Store from './store.js'
-import { loadSiteConf, initUser, makeRequest } from './utils.js'
+import { loadSiteConf, getMethods } from './utils.js'
 import createRoutes from './route_creator.js'
 import ComponentManager from './component_manager.js'
 import TemplateManager from './template_manager.js'
@@ -12,11 +12,12 @@ export default async function init (mountpoint, config) {
   const componentManager = ComponentManager(siteconf)
   const templateManager = TemplateManager(siteconf)
   const store = Store(siteconf)
-  initUser(siteconf.profileURL, store)
+  const methods = getMethods(siteconf, store)
+  methods.initUser(store)
   
   const router = new VueRouter({
     mode: 'history',
-    routes: await createRoutes(siteconf, componentManager, templateManager)
+    routes: await createRoutes(siteconf, componentManager, templateManager, methods)
   })
   router.beforeEach((to, from, next) => {
     window.scrollTo(0, 0)
@@ -38,9 +39,7 @@ export default async function init (mountpoint, config) {
       SiteFooter: () => componentManager.load('footer.js'),
       CookiesPrompt: CookiesPromptFN(templateManager)
     },
-    methods: {
-      request: makeRequest
-    },
+    methods,
     template: `
     <div>
       <SiteHeader />
