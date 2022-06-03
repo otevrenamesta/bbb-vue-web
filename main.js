@@ -50,7 +50,6 @@ export default async function init (mountpoint, config) {
       <router-view :key="$route.fullPath" />
       <SiteFooter />
       <div v-if="toast" id="snackbar">{{ toast }}</div>
-      <button @click="$root.addToast('koko')">jj</button>
     </div>
     `
   }).$mount(mountpoint)
