@@ -17,16 +17,22 @@ export function mediaUrl (siteconf, media, params) {
 const KEY = window.location.hostname + '_BBB_token'
 
 export function getMethods(siteconf, store) {
-  let token = null
+
+  function addToast (message, type = 'success') {
+    this.$data.toast = message
+    setTimeout(() => {
+      this.$data.toast = null
+    }, 3000)
+  }
   
   function setToken(newToken) {
     localStorage.setItem(KEY, newToken)
-    token = newToken
     initUser()
   }
 
   function makeRequest(method, url, opts = {}) {
     const cfg = { method }
+    const token = localStorage.getItem(KEY)
     token && opts.withCredentials && Object.assign(cfg, { 
       headers: { Authorization: `Bearer ${token}` } 
     })
@@ -35,7 +41,9 @@ export function getMethods(siteconf, store) {
       && Object.assign(cfg.headers, { 'Content-Type':'application/json' })
     return fetch(url, cfg)
     .then(res => {
-      if (res.status === 401) return doLogout()
+      if (res.status === 401 && localStorage.getItem(KEY) !== token) {
+        return doLogout()
+      }
       const ctype = res.headers.get('Content-Type')
       return ctype && ctype.indexOf('json') >= 0 ? res.json() : res.text()
     })
@@ -55,12 +63,16 @@ export function getMethods(siteconf, store) {
   function doLogout () {
     store.commit('profile', null)
     siteconf.user = null
-    token = null
     localStorage.removeItem(KEY)
   }
   
   async function initUser () {
-    token = localStorage.getItem(KEY)
+    const token = localStorage.getItem(KEY)
+    if (!token) {
+      store.commit('profile', null)
+      siteconf.user = null
+      return
+    }
     try {
       const user = await makeRequest('get', siteconf.profileURL, { withCredentials: true })
       if (user) {
@@ -75,6 +87,7 @@ export function getMethods(siteconf, store) {
     login, logout,
     setToken,
     initUser,
+    addToast,
     mediaUrl: (media, params) => mediaUrl(siteconf, media, params)
   }
 }

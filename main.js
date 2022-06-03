@@ -8,7 +8,7 @@ import CookiesPromptFN from './components/cookiesPrompt.js'
 
 export default async function init (mountpoint, config) {
   const siteconf = await loadSiteConf(config)
-  Object.assign(siteconf, config, { user: null })
+  Object.assign(siteconf, config, { user: null, toast: '' })
   const componentManager = ComponentManager(siteconf)
   const templateManager = TemplateManager(siteconf)
   const store = Store(siteconf)
@@ -49,6 +49,8 @@ export default async function init (mountpoint, config) {
       <CookiesPrompt />
       <router-view :key="$route.fullPath" />
       <SiteFooter />
+      <div v-if="toast" id="snackbar">{{ toast }}</div>
+      <button @click="$root.addToast('koko')">jj</button>
     </div>
     `
   }).$mount(mountpoint)
