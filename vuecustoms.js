@@ -18,11 +18,13 @@ function _formatDate (value) {
 Vue.filter('formatDate', _formatDate)
 Vue.filter('date', _formatDate)
 
-Vue.filter('longDate', function (value) {
+function _formatDatetime (value) {
   if (value) {
     value = _.isString(value) ? moment(value) : value
     return value.format('DD.MM.YYYY HH:mm')
   }
-})
+}
+Vue.filter('longDate', _formatDatetime)
+Vue.filter('datetime', _formatDatetime)
 
 Vue.component('composition', composition)
