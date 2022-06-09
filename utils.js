@@ -15,6 +15,7 @@ export function mediaUrl (siteconf, media, params) {
 }
 
 const KEY = window.location.hostname + '_BBB_token'
+const USERKEY = window.location.hostname + '_BBB_user'
 
 export function getMethods(siteconf, store) {
 
@@ -25,9 +26,10 @@ export function getMethods(siteconf, store) {
     }, 3000)
   }
   
-  function setToken(newToken) {
+  async function setToken(newToken) {
     localStorage.setItem(KEY, newToken)
-    initUser()
+    const user = await makeRequest('get', siteconf.profileURL, { withCredentials: true })
+    localStorage.setItem(USERKEY, JSON.stringify(user))
   }
 
   function makeRequest(method, url, opts = {}) {
@@ -64,22 +66,22 @@ export function getMethods(siteconf, store) {
     store.commit('profile', null)
     siteconf.user = null
     localStorage.removeItem(KEY)
+    localStorage.removeItem(USERKEY)
   }
   
   async function initUser () {
-    const token = localStorage.getItem(KEY)
-    if (!token) {
-      store.commit('profile', null)
-      siteconf.user = null
-      return
-    }
+    const userS = localStorage.getItem(USERKEY)
+    if (!userS) return
     try {
-      const user = await makeRequest('get', siteconf.profileURL, { withCredentials: true })
-      if (user) {
-        store.commit('profile', user)
-        siteconf.user = user
-      }
-    } catch (_) {}
+      const user = JSON.parse(userS)
+      const now = new Date()
+      const exp = new Date(user.exp * 1000)
+      if (now > exp) return doLogout()
+      store.commit('profile', user)
+      siteconf.user = user
+    } catch (_) {
+      doLogout()
+    }
   }
 
   return {

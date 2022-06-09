@@ -45,8 +45,8 @@ export default async function createRoutes (siteconf, componentManager, template
   await Promise.all(promises)
   webRoutes.push({ 
     path: `/_t/:t?`, 
-    beforeEnter: (to, from, next) => {
-      methods.setToken(to.params.t || to.query.t)
+    beforeEnter: async (to, from, next) => {
+      await methods.setToken(to.params.t || to.query.t)
       next('/')
     }
   })
