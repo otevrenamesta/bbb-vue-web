@@ -30,6 +30,8 @@ export function getMethods(siteconf, store) {
     localStorage.setItem(KEY, newToken)
     const user = await makeRequest('get', siteconf.profileURL, { withCredentials: true })
     localStorage.setItem(USERKEY, JSON.stringify(user))
+    store.commit('profile', user)
+    siteconf.user = user
   }
 
   function makeRequest(method, url, opts = {}) {
